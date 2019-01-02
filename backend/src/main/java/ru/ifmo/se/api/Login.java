@@ -22,7 +22,7 @@ public class Login {
 
     @POST
     public Response login(@FormParam("login") String login, @FormParam("password") String password){
-        //ToDO:add authorisation
+        //ToDO:add authentication
         if((login.equals("nick") || login.equals("mark")) && password.equals("1234")){
             String token = getToken(login);
             return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
