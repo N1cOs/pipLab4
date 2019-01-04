@@ -4,15 +4,19 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import ru.ifmo.se.domain.User;
 import ru.ifmo.se.ejb.SearchUserBean;
+import ru.ifmo.se.json.JSONLogin;
 import ru.ifmo.se.security.HashGenerator;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.StringWriter;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
@@ -30,14 +34,24 @@ public class Login {
     private HashGenerator hashGenerator;
 
     @POST
-    public Response login(@FormParam("login") String login, @FormParam("password") String password){
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(JSONLogin jsonLogin){
+        String login = jsonLogin.getLogin();
+        String password = jsonLogin.getPassword();
+        if(login == null || password == null){
+            JsonObject jsonObject = Json.createObjectBuilder().
+                    add("info", "Missing login or password").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(jsonObject).build();
+        }
+
         User user = searchUserBean.getUserByLogin(login);
-        String hashPassword = hashGenerator.getHash(password);
-        if(user == null || !user.getPassword().equals(hashPassword))
+        if(user == null || !user.getPassword().equals(hashGenerator.getHash(password)))
             return Response.status(Response.Status.UNAUTHORIZED).build();
         else{
             String token = getToken(login);
-            return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
+            JsonObject jsonObject = Json.createObjectBuilder().add("token", token).build();
+            return Response.ok().entity(jsonObject).build();
         }
     }
 
