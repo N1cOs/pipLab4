@@ -17,7 +17,7 @@ import java.util.logging.Level;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 @Log
-public class AuthenticationFilter implements ContainerRequestFilter {
+public class AuthorisationFilter implements ContainerRequestFilter {
 
     private static final String KEY = "VERY_SECRET_KEY";
 

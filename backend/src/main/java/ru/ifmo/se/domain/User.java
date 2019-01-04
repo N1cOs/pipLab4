@@ -10,6 +10,10 @@ import java.util.Set;
 
 @Entity
 @Data
+@Table(name = "users")
+@NamedQueries({
+        @NamedQuery(name = "User.findByLogin", query = "select u from User u where u.login = :login")
+})
 public class User implements Serializable {
 
     @Id

@@ -2,8 +2,12 @@ package ru.ifmo.se.api;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.java.Log;
+import ru.ifmo.se.domain.User;
+import ru.ifmo.se.ejb.SearchUserBean;
+import ru.ifmo.se.security.HashGenerator;
 
+import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,20 +19,25 @@ import java.util.Base64;
 import java.util.Date;
 
 @Path("login")
-@Log
 public class Login {
 
     private static final String KEY = "VERY_SECRET_KEY";
 
+    @EJB
+    private SearchUserBean searchUserBean;
+
+    @Inject
+    private HashGenerator hashGenerator;
+
     @POST
     public Response login(@FormParam("login") String login, @FormParam("password") String password){
-        //ToDO:add authentication
-        if((login.equals("nick") || login.equals("mark")) && password.equals("1234")){
+        User user = searchUserBean.getUserByLogin(login);
+        String hashPassword = hashGenerator.getHash(password);
+        if(user == null || !user.getPassword().equals(hashPassword))
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        else{
             String token = getToken(login);
             return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
-        }
-        else{
-            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
