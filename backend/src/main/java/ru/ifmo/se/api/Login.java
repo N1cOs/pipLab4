@@ -40,9 +40,7 @@ public class Login {
         String login = jsonLogin.getLogin();
         String password = jsonLogin.getPassword();
         if(login == null || password == null){
-            JsonObject jsonObject = Json.createObjectBuilder().
-                    add("info", "Missing login or password").build();
-            return Response.status(Response.Status.BAD_REQUEST).entity(jsonObject).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         User user = searchUserBean.getUserByLogin(login);
