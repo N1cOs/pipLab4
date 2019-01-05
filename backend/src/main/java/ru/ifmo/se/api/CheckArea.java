@@ -1,8 +1,5 @@
 package ru.ifmo.se.api;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 import ru.ifmo.se.domain.Check;
 import ru.ifmo.se.domain.User;
 import ru.ifmo.se.ejb.CheckAreaBean;
@@ -15,12 +12,13 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.stream.JsonCollectors;
+import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.List;
 
 @Path("check")
@@ -36,9 +34,9 @@ public class CheckArea {
     @Secured
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response checkArea(@HeaderParam(HttpHeaders.AUTHORIZATION) String header,
-                              JSONCheck jsonCheck){
-        String login = getLoginFromHeader(header);
+    public Response checkArea(@Context ContainerRequestContext context,
+                              @Valid JSONCheck jsonCheck){
+        String login = (String) context.getProperty("login");
         User user = searchUserBean.getUserByLogin(login);
         Check check = checkAreaBean.check(user, jsonCheck.getX(), jsonCheck.getY(), jsonCheck.getR());
         return Response.ok().entity(getJsonCheck(check)).build();
@@ -48,8 +46,8 @@ public class CheckArea {
     @Path("history")
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonArray getHistory(@HeaderParam(HttpHeaders.AUTHORIZATION) String header){
-        String login = getLoginFromHeader(header);
+    public JsonArray getHistory(@Context ContainerRequestContext context){
+        String login = (String) context.getProperty("login");
         User user = searchUserBean.getUserByLogin(login);
         List<Check> results = checkAreaBean.getResults(user.getId());
         return results.stream().map(this::getJsonCheck).collect(JsonCollectors.toJsonArray());
@@ -63,12 +61,5 @@ public class CheckArea {
                 .add("result", check.isResult())
                 .add("date", new SimpleDateFormat("HH:mm MM-dd-yyyy").
                         format(check.getDate())).build();
-    }
-
-    private String getLoginFromHeader(String header){
-        String key = Base64.getEncoder().encodeToString("VERY_SECRET_KEY".getBytes());
-        String token = header.substring("Bearer".length()).trim();
-        Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-        return  (String) claims.getBody().get("login");
     }
 }

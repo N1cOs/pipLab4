@@ -4,6 +4,8 @@ import ru.ifmo.se.domain.Check;
 import ru.ifmo.se.domain.User;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -22,6 +24,7 @@ public class CheckAreaBean {
         return query.getResultList();
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Check check(User user, double xValue, double yValue, double rValue){
         Check check = new Check();
         check.setXValue(xValue);
