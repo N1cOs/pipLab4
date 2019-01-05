@@ -57,9 +57,9 @@ public class Login {
         String secretKey = Base64.getEncoder().encodeToString(KEY.getBytes());
         Date expirationDate = Date.from(Instant.now().plus(20, ChronoUnit.MINUTES));
         String token = Jwts.builder()
-                .setSubject(login)
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
+                .claim("login", login)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
         return token;

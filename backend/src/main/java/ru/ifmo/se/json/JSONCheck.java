@@ -7,9 +7,11 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class JSONLogin implements Serializable {
-    private String login;
+public class JSONCheck implements Serializable {
 
-    private String password;
+    private double x;
 
+    private double y;
+
+    private double r;
 }
