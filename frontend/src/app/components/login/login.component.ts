@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
   showToken() {
 
     // console.log(this.user.login, this.user.password);
-    let classProps = Object.keys(this.loginService.login(this.login, this.password)
-      .subscribe((res: Response) => this.token = res['token']));
+    this.loginService.login(this.login, this.password)
+      .subscribe((res: Response) => this.token = res['token']);
   }
 
 }

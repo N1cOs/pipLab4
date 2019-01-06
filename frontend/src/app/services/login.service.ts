@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 
 
@@ -15,7 +15,6 @@ export class LoginService {
 
   }
 
-  response: string;
   // url to api login
   private loginUrl = 'api/login';
   // private loginUrl = 'http://localhost:8080/lab4/api/login';
