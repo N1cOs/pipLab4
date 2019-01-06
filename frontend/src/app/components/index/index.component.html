@@ -1,0 +1,25 @@
+<div class="content">
+  <form id="area_form" class="choose" action="controllerServlet" method="get">
+    <p>Выберите координату по X:</p>
+    <input id="hiddenX" type="hidden" name="valueOfX" value="-10">
+    <div class="coord_x">
+      <input type="button" value="-2">
+      <input type="button" value="-1.5">
+      <input type="button" value="-1">
+      <input type="button" value="-0.5">
+      <input type="button" value="0">
+      <input type="button" value="0.5">
+      <input type="button" value="1">
+      <input type="button" value="1.5">
+      <input type="button" value="2">
+    </div>
+    <p>Выберите координату по Y:</p>
+    <input type="text" maxlength="15" name="valueOfY" placeholder="Введите число от -5 до 3">
+    <p>Выберите значение радиуса R:</p>
+    <input type="text" maxlength="15" name="valueOfR" placeholder="Введите число от 1 до 4">
+    <input type="submit" name="submitForm" value="Проверить">
+    <canvas #myCanvas width="300" height="300" style="margin: 20px; border: 2px solid #0a28b4"></canvas>
+
+  </form>
+
+</div>

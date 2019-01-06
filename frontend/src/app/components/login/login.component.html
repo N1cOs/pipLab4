@@ -1,0 +1,5 @@
+<input type="text" [(ngModel)]="login"><br>
+<input type="password" [(ngModel)]="password"><br>
+<button (click)="showToken()"> Login! </button>
+<div *ngIf="token">токен: <br>{{token}}</div>
+
