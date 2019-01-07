@@ -9,9 +9,10 @@
   </div>
 </div>
 
-<a routerLink="/login">login</a><br>
-<a routerLink="/check">check</a><br>
-<a routerLink="/index">index</a><br>
+<div *ngIf="tokenStorage.logged">
+  <button (click)="authService.logOut()">Log out</button>
+</div>
+
 
 
 <router-outlet></router-outlet>

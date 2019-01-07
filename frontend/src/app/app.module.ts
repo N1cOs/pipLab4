@@ -8,6 +8,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {LoginComponent} from './components/login/login.component';
 import {FormsModule} from "@angular/forms";
 import {Token} from "./token";
+import {AuthGuard} from "./auth-guard";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import {Token} from "./token";
     HttpClientModule,
     FormsModule
   ],
-  providers: [Token],
+  providers: [Token, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

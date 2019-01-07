@@ -36,8 +36,10 @@ export class LoginService {
   }
 
   saveToken(jwt: string){
-    if (jwt)
+    if (jwt) {
       this.token.value = jwt;
+      this.token.logged = true;
+    }
   }
 
 
