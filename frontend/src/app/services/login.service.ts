@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Token} from "../token";
+import {Router} from "@angular/router";
+import {readCommandLineAndConfiguration} from "@angular/compiler-cli/src/main";
 
 
 
@@ -12,7 +13,10 @@ const postOptions = {
   providedIn: 'root'
 })
 export class LoginService {
-  constructor(private http: HttpClient, private token: Token) {
+  constructor(
+    private http: HttpClient,
+    private router: Router
+    ) {
 
   }
 
@@ -30,16 +34,31 @@ export class LoginService {
     };
     return this.http.post(this.loginUrl, body, postOptions)
       .subscribe(
-        data => this.saveToken(data['token']),
+        (data: Response) => {
+
+          // this.saveToken(data['token']);
+          // console.log(this.tokenStorage.logged);
+          this.setToken(data);
+          console.log(localStorage.getItem('token'));
+          // this.redirectToIndex();
+
+        },
         err => console.log(err)
       );
   }
 
-  saveToken(jwt: string){
-    if (jwt) {
-      this.token.value = jwt;
-      this.token.logged = true;
-    }
+  private setToken(authResult){
+    localStorage.setItem('token',authResult['token']);
+    //todo make login page unreachebale when logged in
+    //todo make history dots page on index
+    //todo rewrite canvas
+    //todo make form on checkpage
+  }
+
+
+  redirectToIndex(){
+    //todo: fix navigation work when logout and log in.
+    this.router.navigate(['index']);
   }
 
 

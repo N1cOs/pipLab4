@@ -1,24 +1,28 @@
 import {Injectable} from "@angular/core";
-import {Token} from "../token";
+import {Router} from "@angular/router";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private tokenStorage: Token){
+  constructor(private router: Router){
 
   }
 
   isAuthentificated(): boolean{
-    if (this.tokenStorage.logged)
+    if (localStorage.getItem('token')) {
       return true;
-    else
+    }
+    else {
       return false;
+    }
   }
 
   logOut(){
-    this.tokenStorage.logged = false;
-    this.tokenStorage.value = '';
+    localStorage.removeItem('token');
+    this.router.navigate(['index']);
+
   }
 
 }

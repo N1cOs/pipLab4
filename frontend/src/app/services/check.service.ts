@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Token} from "../token";
 
 
 @Injectable({
@@ -13,7 +12,8 @@ export class CheckService {
 
   // private checkUrl = 'http://localhost:8080/lab4/api/check';
 
-  constructor(private http: HttpClient, private token: Token) {
+  constructor(private http: HttpClient) {
+
   }
 
   check(valueX: number, valueY: number, valueR: number, token: string) {

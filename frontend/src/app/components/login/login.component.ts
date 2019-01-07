@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LoginService} from "../../services/login.service";
-import {Token} from "../../token";
 
 @Component({
   selector: 'app-login',
@@ -11,16 +10,15 @@ export class LoginComponent implements OnInit {
 
   @Input() login: string;
   @Input() password: string;
-  token: string;
 
-  constructor(private loginService: LoginService, private tokenStorage: Token) {
+  constructor(private loginService: LoginService) {
   }
 
   ngOnInit() {
 
   }
 
-  showToken() {
+  logIn() {
 
     // console.log(this.user.login, this.user.password);
     this.loginService.login('dimon', '5678')

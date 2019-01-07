@@ -5,14 +5,18 @@ import {Observable} from "rxjs";
 
 
 @Injectable()
-export class AuthGuard implements CanActivate{
+export class AuthGuard implements CanActivate {
 
-  constructor(protected  router: Router, protected authService: AuthService){
+  constructor(protected  router: Router, protected authService: AuthService) {
 
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.isAuthentificated();
+    if (!this.authService.isAuthentificated())
+      this.router.navigate(['login']);
+
+    return true;
+
   }
 
 

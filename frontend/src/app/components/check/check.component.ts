@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CheckService} from "../../services/check.service";
-import {Token} from "../../token";
 
 @Component({
   selector: 'app-check',
@@ -22,12 +21,12 @@ export class CheckComponent implements OnInit {
   // private coordCenter: number;
   // private scale: number;
 
-  constructor(private checkService: CheckService, private tokenStorage: Token) {
+  constructor(private checkService: CheckService) {
   }
 
   checkResults(){
-    var value = this.tokenStorage.value;
-    console.log(value);
+    var value = localStorage.getItem('token');
+
     // Be warned! I switched on random values!
     // this.valueOfX = Math.random()*(9) - 3;
     // this.valueOfY = Math.random()*(7) - 3;

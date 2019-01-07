@@ -7,8 +7,10 @@ import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core'
 })
 export class IndexComponent implements OnInit{
   constructor() {
-
   }
   ngOnInit() {
+  }
+  init(){
+    console.log(localStorage.getItem('token'))
   }
 }

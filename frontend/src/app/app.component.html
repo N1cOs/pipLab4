@@ -9,11 +9,7 @@
   </div>
 </div>
 
-<div *ngIf="tokenStorage.logged">
+<div *ngIf="authService.isAuthentificated()">
   <button (click)="authService.logOut()">Log out</button>
 </div>
-
-
-
 <router-outlet></router-outlet>
-
