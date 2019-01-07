@@ -4,30 +4,30 @@
     <p>Выберите координату по X:</p>
     <input id="hiddenX" type="hidden" name="valueOfX" value="-10">
 
-    <input type="radio" [(ngModel)]="valueOfX" name="x" value="-3">-3<br>
-    <input type="radio" [(ngModel)]="valueOfX" name="x" value="-2">-2 <br>
-    <input type="radio" [(ngModel)]="valueOfX" name="x" value="-1">-1<br>
-    <input type="radio" [(ngModel)]="valueOfX" name="x" value="0">0 <br>
-    <input type="radio" [(ngModel)]="valueOfX" name="x" value="1">1<br>
-    <input type="radio" [(ngModel)]="valueOfX" name="x" value="2">2 <br>
-    <input type="radio" [(ngModel)]="valueOfX" name="x" value="3">3<br>
-    <input type="radio" [(ngModel)]="valueOfX" name="x" value="4">4 <br>
+    <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="-3">-3<br>
+    <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="-2">-2 <br>
+    <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="-1">-1<br>
+    <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="0">0 <br>
+    <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="1">1<br>
+    <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="2">2 <br>
+    <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="3">3<br>
+    <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="4">4 <br>
 
     <p>Выберите координату по Y:</p>
     <input type="text" maxlength="15" [(ngModel)]="valueOfY" name="valueOfY" placeholder="Введите число от -3 до 3">
     <p>Выберите значение радиуса R:</p>
 
-    <input type="radio" [(ngModel)]="valueOfR" name="r" value="-3">-3<br>
-    <input type="radio" [(ngModel)]="valueOfR" name="r" value="-2">-2 <br>
-    <input type="radio" [(ngModel)]="valueOfR" name="r" value="-1">-1<br>
-    <input type="radio" [(ngModel)]="valueOfR" name="r" value="0">0 <br>
-    <input type="radio" [(ngModel)]="valueOfR" name="r" value="1">1<br>
-    <input type="radio" [(ngModel)]="valueOfR" name="r" value="2">2 <br>
-    <input type="radio" [(ngModel)]="valueOfR" name="r" value="3">3<br>
-    <input type="radio" [(ngModel)]="valueOfR" name="r" value="4">4 <br>
+    <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="-3">-3<br>
+    <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="-2">-2 <br>
+    <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="-1">-1<br>
+    <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="0">0 <br>
+    <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="1">1<br>
+    <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="2">2 <br>
+    <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="3">3<br>
+    <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="4">4 <br>
 
     <button (click)="checkResults()">Check!</button>
-    <canvas #myCanvas width="300" height="300" style="margin: 20px; border: 2px solid #0a28b4"></canvas>
+    <canvas #myCanvas id="myCanvas" width="300" height="300" style="margin: 20px; border: 2px solid #0a28b4"></canvas>
 
   </form>
 

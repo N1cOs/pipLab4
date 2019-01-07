@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Token} from "../token";
 
 
 
@@ -11,7 +12,7 @@ const postOptions = {
   providedIn: 'root'
 })
 export class LoginService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private token: Token) {
 
   }
 
@@ -27,7 +28,16 @@ export class LoginService {
       "login": login,
       "password": password
     };
-    return this.http.post(this.loginUrl, body, postOptions);
+    return this.http.post(this.loginUrl, body, postOptions)
+      .subscribe(
+        data => this.saveToken(data['token']),
+        err => console.log(err)
+      );
+  }
+
+  saveToken(jwt: string){
+    if (jwt)
+      this.token.value = jwt;
   }
 
 
