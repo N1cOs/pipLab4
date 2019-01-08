@@ -1,2 +1,16 @@
 <p (click)="init()">index!</p>
+<button (click)="checkHistory()">CHECK HISTORY</button>
+<table *ngIf="history">
+  <tr *ngFor="let bit of history">
+    <td>
+    {{bit.x}}
+    </td>
+    <td>
+    {{bit.y}}
+    </td>
+    <td>
+    {{bit.r}}
+    </td>
 
+  </tr>
+</table>

@@ -1,6 +1,8 @@
 window.onload = (e) => {
   if (location.pathname === '/check') {
+    console.log('im on check!!!, here i am!!!');
     var radius = 100;
+
 
     const canvas = document.getElementById('myCanvas');
     const ctx = canvas.getContext('2d');

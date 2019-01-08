@@ -14,6 +14,7 @@ export class CheckComponent implements OnInit {
   @Input() valueOfR: number;
   answer: string;
 
+
   // @ViewChild("myCanvas") myCanvas;
   // private radius: number;
   // private width: number;
@@ -25,19 +26,18 @@ export class CheckComponent implements OnInit {
   }
 
   checkResults(){
-    var value = localStorage.getItem('token');
-
+    let token = localStorage.getItem('token');
     // Be warned! I switched on random values!
     // this.valueOfX = Math.random()*(9) - 3;
     // this.valueOfY = Math.random()*(7) - 3;
     // this.valueOfR = Math.random()*(9) - 3;
 
-    this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfY, value)
+    this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfY, token)
       .subscribe((res: Response )=> this.answer = res['result']);
-    // console.log(this.tokenStorage.value);
-    // console.log(this.tokenStorage.value)
 
   }
+
+
 
   ngOnInit() {
   }

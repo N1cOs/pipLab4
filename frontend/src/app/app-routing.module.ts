@@ -7,7 +7,7 @@ import {AuthGuard} from "./classes/auth-guard";
 import {LoginGuard} from "./classes/login-guard";
 
 const routes: Routes = [
-  // {path: '', redirectTo: '/index', pathMatch: 'full'},
+  {path: '', redirectTo: '/index', pathMatch: 'full'},
   {path: 'login', component: LoginComponent,
     canActivate: [LoginGuard]
   },
