@@ -7,7 +7,8 @@ import {CheckComponent} from './components/check/check.component';
 import {AppRoutingModule} from './app-routing.module';
 import {LoginComponent} from './components/login/login.component';
 import {FormsModule} from "@angular/forms";
-import {AuthGuard} from "./auth-guard";
+import {AuthGuard} from "./classes/auth-guard";
+import {LoginGuard} from "./classes/login-guard";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import {AuthGuard} from "./auth-guard";
     HttpClientModule,
     FormsModule
   ],
-  providers: [ AuthGuard],
+  providers: [ AuthGuard, LoginGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

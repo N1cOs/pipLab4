@@ -40,7 +40,7 @@ export class LoginService {
           // console.log(this.tokenStorage.logged);
           this.setToken(data);
           console.log(localStorage.getItem('token'));
-          // this.redirectToIndex();
+          this.redirectToIndex();
 
         },
         err => console.log(err)
@@ -58,7 +58,7 @@ export class LoginService {
 
   redirectToIndex(){
     //todo: fix navigation work when logout and log in.
-    this.router.navigate(['index']);
+    this.router.navigate(['/index']);
   }
 
 
