@@ -41,26 +41,7 @@ export class CheckService {
         'Authorization': 'Bearer ' + token
       })
     };
-    this.http.get(this.checkHistoryUrl, getOptions)
-      .subscribe(
-        (res) => {
-          let amount = Object.keys(res).length;
-          this.history = [];
-          for (let i = 0; i < amount; i++) {
-            this.history.push(
-              {
-                x: res[i]['xValue'],
-                y: res[i]['yValue'],
-                r: res[i]['rValue'],
-                result: res[i]['result'],
-                date: res[i]['date']
-              }
-            )
-          }
-          localStorage.setItem('history', JSON.stringify(this.history));
-          // return res;
-        }
-      );
+    return this.http.get(this.checkHistoryUrl, getOptions);
 
 
   }

@@ -10,7 +10,7 @@ import {Observable} from "rxjs";
 })
 export class IndexComponent implements OnInit{
 
-  private history: Observable<JSON>;
+  private history = [];
 
   constructor(private checkService: CheckService) {
 
@@ -25,7 +25,26 @@ export class IndexComponent implements OnInit{
 
   }
   checkHistory(){
-    this.checkService.checkHistory(localStorage.getItem('token'));
+    this.checkService.checkHistory(localStorage.getItem('token'))
+      .subscribe(
+        (res) => {
+          let amount = Object.keys(res).length;
+          this.history = [];
+          for (let i = 0; i < amount; i++) {
+            this.history.push(
+              {
+                x: res[i]['xValue'],
+                y: res[i]['yValue'],
+                r: res[i]['rValue'],
+                result: res[i]['result'],
+                date: res[i]['date']
+              }
+            )
+          }
+          localStorage.setItem('history', JSON.stringify(this.history));
+          // return res;
+        }
+      );
     return JSON.parse(localStorage.getItem('history'));
 
     // console.log(this.history)

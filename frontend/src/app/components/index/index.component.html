@@ -1,7 +1,16 @@
 <div class="previous_checks">
   <div class="title">Результаты прошлых проверок</div>
 
-  <table id="history_table">
+  <table id="history_table" border="1">
+    <thead>
+    <th>x</th>
+    <th>y</th>
+    <th>r</th>
+    <th>результат проверки</th>
+    <th>дата</th>
+    </thead>
+
+    <tbody>
     <tr *ngFor="let bit of history">
       <td>
         {{bit.x}}
@@ -20,5 +29,6 @@
       </td>
 
     </tr>
+    </tbody>
   </table>
 </div>

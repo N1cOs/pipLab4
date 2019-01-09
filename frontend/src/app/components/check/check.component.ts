@@ -50,7 +50,6 @@ export class CheckComponent implements OnInit {
       let token = localStorage.getItem('token');
       this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfR, token)
         .subscribe((res: Response) => this.answer = res['result']);
-      this.route.navigate(['/index'])
     }
   }
 
@@ -83,10 +82,11 @@ export class CheckComponent implements OnInit {
       let token = localStorage.getItem('token');
       this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfR, token)
         .subscribe((res: Response) => this.answer = res['result']);
-      this.route.navigate(['/index'])
     } else {
       alert('Выберите корректное значение радиуса r');
     }
   }
+
+
 
 }

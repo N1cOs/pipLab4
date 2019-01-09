@@ -18,6 +18,7 @@ export class LoginService {
 
   // url to api login
   private loginUrl = 'api/login';
+
   // private loginUrl = 'http://localhost:8080/lab4/api/login';
 
   login(login: string, password: string) {
@@ -29,8 +30,7 @@ export class LoginService {
       .subscribe(
         (data: Response) => {
           this.setToken(data);
-          console.log(localStorage.getItem('token'));
-          this.router.navigate(['/index']);
+          this.router.navigate(['/check']);
         },
         err => console.log(err)
       );
@@ -39,7 +39,5 @@ export class LoginService {
   private setToken(authResult) {
     localStorage.setItem('token', authResult['token']);
     //todo make history dots page on index
-    //todo rewrite canvas
-    //todo make form on checkpage
   }
 }
