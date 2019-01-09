@@ -11,7 +11,5 @@
 
 <div *ngIf="authService.isAuthentificated()">
   <button (click)="authService.logOut()">Log out</button>
-  <button *ngIf="!authService.matchPath('/index')" (click)="authService.route('index')">index</button>
-  <button *ngIf="!authService.matchPath('/check')" (click)="authService.route('check')">check</button>
 </div>
 <router-outlet></router-outlet>

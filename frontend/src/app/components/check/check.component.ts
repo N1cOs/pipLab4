@@ -1,6 +1,9 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, ɵangular_packages_core_core_r} from '@angular/core';
 import {CheckService} from "../../services/check.service";
+import {Router} from "@angular/router";
 
+
+declare function buildCanvas();
 @Component({
   selector: 'app-check',
   templateUrl: './check.component.html',
@@ -14,106 +17,76 @@ export class CheckComponent implements OnInit {
   @Input() valueOfR: number;
   answer: string;
 
-
-  // @ViewChild("myCanvas") myCanvas;
-  // private radius: number;
-  // private width: number;
-  // private height: number;
-  // private coordCenter: number;
-  // private scale: number;
-
-  constructor(private checkService: CheckService) {
+  constructor(private checkService: CheckService, private route: Router) {
   }
 
-  checkResults(){
-    let token = localStorage.getItem('token');
-    // Be warned! I switched on random values!
-    // this.valueOfX = Math.random()*(9) - 3;
-    // this.valueOfY = Math.random()*(7) - 3;
-    // this.valueOfR = Math.random()*(9) - 3;
+  checkValues() {
+    let correct = true;
+    if (
+      (this.valueOfX > 5) || (this.valueOfX < -3) || (typeof this.valueOfX === 'undefined')
+    ) {
+      alert('x is incorect');
+      correct = false;
+    }
+    if (
+      (this.valueOfY > 3) || (this.valueOfY < -3) || (typeof this.valueOfY === 'undefined') || (!this.valueOfY)
+    ) {
+      alert('y is incorrect');
+      correct = false;
+    }
+    if (
+      (this.valueOfR > 5) || (this.valueOfR < 1) || (typeof this.valueOfR === 'undefined')
+    ) {
+      alert('r is incorrect');
+      correct = false;
+    }
 
-    this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfY, token)
-      .subscribe((res: Response )=> this.answer = res['result']);
-
+    return correct;
   }
 
 
+  checkResults() {
+    if (this.checkValues()) {
+      let token = localStorage.getItem('token');
+      this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfR, token)
+        .subscribe((res: Response) => this.answer = res['result']);
+      this.route.navigate(['/index'])
+    }
+  }
 
   ngOnInit() {
+    // let validationScript = document.createElement('script');
+    // validationScript.type = 'text/javascript';
+    // validationScript.src = '../../../assets/validation.js';
+    buildCanvas();
   }
 
-  // ngAfterViewInit() {
-  //   var radius = 100;
-  //   const canvas = this.myCanvas.nativeElement;
-  //   this.context = canvas.getContext('2d');
-  //   this.rock(canvas, this.context);
-  // }
-  //
-  // rock(canvas, context) {
-  //   this.width = canvas.width;
-  //   this.height = canvas.height;
-  //   this.coordCenter = this.width / 2;
-  //   this.scale = 50;
-  //
-  // }
-  //
-  // getMP(canvas, event) {
-  //   let rect = canvas.getBoundingClientRect();
-  //   return {
-  //     x: event.clientX - rect.left - 5,
-  //     y: event.clientY - rect.top - 5
-  //   };
-  // }
-  //
-  // draw(ctx, coordCenter, width, height, radius) {
-  //   ctx.beginPath();
-  //   let startangel = 180 * Math.PI / 180;
-  //   let endangel = 270 * Math.PI / 180;
-  //   ctx.arc(coordCenter, coordCenter, radius / 2, startangel, endangel, false);
-  //   ctx.fillStyle = 'blue';
-  //   ctx.fill();
-  //   ctx.moveTo(width / 2, height / 2 - radius / 2);
-  //   ctx.lineTo(width / 2 - radius / 2, height / 2);
-  //   ctx.lineTo(width / 2, height / 2);
-  //   ctx.fill();
-  //   ctx.beginPath();
-  //   ctx.rect(width / 2, height / 2 - radius, radius, radius);
-  //   ctx.fill();
-  //   ctx.beginPath();
-  //   ctx.moveTo(width / 2, height / 2 + radius);
-  //   ctx.lineTo(width / 2 + radius, height / 2);
-  //   ctx.lineTo(width / 2, height / 2);
-  //   ctx.fill();
-  //   ctx.fillStyle = 'blue';
-  //   ctx.fill();
-  //   ctx.strokeStyle = 'black';
-  //   ctx.stroke();
-  //
-  //   ctx.beginPath();
-  //   ctx.moveTo(0, height / 2);
-  //   ctx.lineTo(width, height / 2);
-  //   ctx.strokeStyle = '#000';
-  //   ctx.stroke();
-  //   ctx.beginPath();
-  //   ctx.moveTo(width / 2, 0);
-  //   ctx.lineTo(width / 2, height);
-  //   ctx.stroke();
-  //
-  //   ctx.fillStyle = '#ed1c24';
-  // }
-  //
-  // historyDots(ctx, scale, width, height, valueOfX, valueOfY) {
-  //   const xCoordinates = document.querySelectorAll('td.x_coord');
-  //   const yCoordinates = document.querySelectorAll('td.y_coord');
-  //   for (let i = 0; i < xCoordinates.length; i++) {
-  //     ctx.beginPath();
-  //     // let valueOfX = parseFloat(xCoordinates[i].innerText);
-  //     // let valueOfY = parseFloat(yCoordinates[i].innerText);
-  //     ctx.arc(valueOfX * scale + width / 2, height / 2 - valueOfY * scale, 2, 0, Math.PI * 2);
-  //     ctx.fillStyle = '#ed1c24';
-  //     ctx.fill();
-  //   }
-  // }
 
+  getMP(canvas, event) {
+    let rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left - 5,
+      y: event.clientY - rect.top - 5
+    };
+  }
+
+  canvasListener(e) {
+    let scale = 30;
+    let canvas = document.querySelector('canvas');
+    let MP = this.getMP(canvas, e);
+    let radius = this.valueOfR;
+    this.valueOfX = parseFloat(((MP.x - canvas.width / 2) / scale)
+      .toFixed(3));
+    this.valueOfY = parseFloat(((MP.y - canvas.height / 2) / scale)
+      .toFixed(3));
+    if (radius && radius >= 1 && radius <= 5) {
+      let token = localStorage.getItem('token');
+      this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfR, token)
+        .subscribe((res: Response) => this.answer = res['result']);
+      this.route.navigate(['/index'])
+    } else {
+      alert('Выберите корректное значение радиуса r');
+    }
+  }
 
 }

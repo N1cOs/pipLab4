@@ -57,11 +57,11 @@ export class CheckService {
               }
             )
           }
-          console.log(this.history);
+          localStorage.setItem('history', JSON.stringify(this.history));
           // return res;
         }
       );
-    return this.history;
+
 
   }
 

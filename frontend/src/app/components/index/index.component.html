@@ -1,16 +1,24 @@
-<p (click)="init()">index!</p>
-<button (click)="checkHistory()">CHECK HISTORY</button>
-<table *ngIf="history">
-  <tr *ngFor="let bit of history">
-    <td>
-    {{bit.x}}
-    </td>
-    <td>
-    {{bit.y}}
-    </td>
-    <td>
-    {{bit.r}}
-    </td>
+<div class="previous_checks">
+  <div class="title">Результаты прошлых проверок</div>
 
-  </tr>
-</table>
+  <table id="history_table">
+    <tr *ngFor="let bit of history">
+      <td>
+        {{bit.x}}
+      </td>
+      <td>
+        {{bit.y}}
+      </td>
+      <td>
+        {{bit.r}}
+      </td>
+      <td>
+        {{bit.result}}
+      </td>
+      <td>
+        {{bit.date}}
+      </td>
+
+    </tr>
+  </table>
+</div>

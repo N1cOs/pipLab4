@@ -1,0 +1,12 @@
+.previous_checks{
+  margin: 0 auto;
+  border-style: outset;
+}
+
+
+.previous_checks table{
+  margin-bottom: 20px;
+  margin-top: 30px;
+  width: 90%;
+  border-width: 2px;
+}

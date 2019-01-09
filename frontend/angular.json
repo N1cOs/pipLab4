@@ -25,7 +25,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": ["src/canvas.js"]
+            "scripts": ["src/assets/canvas.js","src/assets/validation.js"]
           },
           "configurations": {
             "production": {

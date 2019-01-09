@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, Input, NgIterable, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {CheckService} from "../../services/check.service";
-import {isEmbeddedView} from "@angular/core/src/view/util";
-import {isEmpty} from "rxjs/operators";
+import {AppPage} from "../../../../e2e/src/app.po";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-index',
@@ -9,21 +9,27 @@ import {isEmpty} from "rxjs/operators";
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit{
-  @Input() private history = [];
+
+  private history: Observable<JSON>;
 
   constructor(private checkService: CheckService) {
+
   }
   ngOnInit() {
-  }
-  init(){
-    console.log(localStorage.getItem('token'))
-  }
-  checkHistory(){
-    this.history=this.checkService.checkHistory(localStorage.getItem('token'));
-    console.log(this.isEmpty());
+    this.history = this.checkHistory();
   }
 
-  isEmpty(): number{
-    return this.history.length;
+  @ViewChild('table') table: ElementRef;
+
+  ngAfterViewInit(){
+
   }
+  checkHistory(){
+    this.checkService.checkHistory(localStorage.getItem('token'));
+    return JSON.parse(localStorage.getItem('history'));
+
+    // console.log(this.history)
+   }
+
+
 }
