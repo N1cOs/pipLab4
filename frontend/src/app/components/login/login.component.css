@@ -1,0 +1,16 @@
+app-login{
+  background: rgba(250,240,250,0.3);
+}
+
+.input{
+  position: fixed;
+  width: auto;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%);
+
+}
+input{
+  margin-bottom: 10px;
+  border-left: 1px;
+}
