@@ -1,8 +1,9 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CheckService} from "../../services/check.service";
-import {AppPage} from "../../../../e2e/src/app.po";
-import {Observable} from "rxjs";
 
+declare function buildCanvas();
+declare function historyDots();
+declare function draw();
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -20,9 +21,8 @@ export class IndexComponent implements OnInit {
     this.history = this.checkHistory();
   }
 
-  @ViewChild('table') table: ElementRef;
-
   ngAfterViewInit() {
+    buildCanvas();
 
   }
 

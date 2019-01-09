@@ -38,6 +38,5 @@ export class LoginService {
 
   private setToken(authResult) {
     localStorage.setItem('token', authResult['token']);
-    //todo make history dots page on index
   }
 }

@@ -4,6 +4,8 @@ import {Router} from "@angular/router";
 
 
 declare function buildCanvas();
+declare function historyDots();
+declare function draw();
 
 @Component({
   selector: 'app-check',
@@ -55,10 +57,7 @@ export class CheckComponent implements OnInit {
   }
 
   ngOnInit() {
-    // let validationScript = document.createElement('script');
-    // validationScript.type = 'text/javascript';
-    // validationScript.src = '../../../assets/validation.js';
-    buildCanvas();
+    // buildCanvas();
   }
 
 
@@ -77,12 +76,13 @@ export class CheckComponent implements OnInit {
     let radius = this.valueOfR;
     this.valueOfX = parseFloat(((MP.x - canvas.width / 2) / scale)
       .toFixed(3));
-    this.valueOfY = parseFloat(((MP.y - canvas.height / 2) / scale)
+    this.valueOfY = -1 * parseFloat(((MP.y - canvas.height / 2) / scale)
       .toFixed(3));
     if (radius && radius >= 1 && radius <= 5) {
       let token = localStorage.getItem('token');
       this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfR, token)
         .subscribe((res: Response) => this.answer = res['result']);
+
     } else {
       alert('Выберите корректное значение радиуса r');
     }
