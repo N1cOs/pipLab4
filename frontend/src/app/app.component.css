@@ -10,8 +10,21 @@ footer {
   font-family: monospace;
 }
 
+.metainfo {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,0%);
+}
+
+.metainfo span:first-child{
+  display: inline-block;
+  margin-right: 5px;
+}
+.name + .clear{
+  clear: both;
+}
 .name{
-  font-size: 28px;
+  font-size: 24px;
   padding-top: 10px;
 }
 
@@ -26,26 +39,6 @@ footer {
 }
 
 
-
-.previous_checks{
-  margin: 0 auto;
-  border-style: outset;
-}
-
-.title{
-  margin-top: 30px;
-  font-size: 1.3em;
-  font-weight: bold;
-  text-align: center;
-}
-
-.previous_checks table{
-  margin-bottom: 20px;
-  margin-top: 30px;
-  width: 90%;
-  border-width: 2px;
-}
-
 footer {
   position: absolute;
   bottom: 0;
@@ -58,4 +51,51 @@ footer div {
   margin-top: 42px;
 }
 
+@media only screen and (min-width: 723px) and (max-width: 1057px) {
+.header .name{
+  font-size: 20px;
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  margin: auto;
+}
+  .dimon, .nick{
+    margin: 0;
+  }
+  .name .clear{
+    clear: both;
+  }
 
+  .metainfo{
+    top: 70px;
+  }
+}
+
+@media only screen and (max-width: 753px){
+  .header .name{
+    font-size: 14px;
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    margin: auto;
+  }
+
+  .name .clear{
+    clear: both;
+  }
+
+  .metainfo{
+    top: 100px;
+  }
+
+  .nick,.dimon{
+    margin: auto;
+    margin-top: 5px;
+
+  }
+  .header{
+    height: 120px;
+  }
+}

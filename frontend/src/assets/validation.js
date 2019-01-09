@@ -8,7 +8,7 @@ console.log('im on check!!!, here i am!!!');
     const width = canvas.width;
     const height = canvas.height;
     const coordCenter = width / 2;
-    const scale = 30;
+    const scale = 20;
 
     function draw() {
       ctx.beginPath();

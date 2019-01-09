@@ -1,9 +1,10 @@
-import {Component, Input, OnInit, ViewChild, ɵangular_packages_core_core_r} from '@angular/core';
+import {Component, HostListener, Input, OnInit, ViewChild, ɵangular_packages_core_core_r} from '@angular/core';
 import {CheckService} from "../../services/check.service";
 import {Router} from "@angular/router";
 
 
 declare function buildCanvas();
+
 @Component({
   selector: 'app-check',
   templateUrl: './check.component.html',
@@ -11,11 +12,14 @@ declare function buildCanvas();
 })
 export class CheckComponent implements OnInit {
 
+
   context: CanvasRenderingContext2D;
   @Input() valueOfX: number;
   @Input() valueOfY: number;
   @Input() valueOfR: number;
   answer: string;
+  scale: number;
+  canvas: HTMLCanvasElement;
 
   constructor(private checkService: CheckService, private route: Router) {
   }
@@ -70,13 +74,16 @@ export class CheckComponent implements OnInit {
   }
 
   canvasListener(e) {
-    let scale = 30;
-    let canvas = document.querySelector('canvas');
-    let MP = this.getMP(canvas, e);
+
+    this.scale = this.canvas.width/10;
+
+    this.canvas = document.querySelector('canvas');
+    console.log(this.canvas.height);
+    let MP = this.getMP(this.canvas, e);
     let radius = this.valueOfR;
-    this.valueOfX = parseFloat(((MP.x - canvas.width / 2) / scale)
+    this.valueOfX = parseFloat(((MP.x - this.canvas.width / 2) / this.scale)
       .toFixed(3));
-    this.valueOfY = parseFloat(((MP.y - canvas.height / 2) / scale)
+    this.valueOfY = parseFloat(((MP.y - this.canvas.height / 2) / this.scale)
       .toFixed(3));
     if (radius && radius >= 1 && radius <= 5) {
       let token = localStorage.getItem('token');
@@ -87,6 +94,18 @@ export class CheckComponent implements OnInit {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    if (event.target.innerWidth <= 722) {
+      this.scale = 20;
+      this.canvas = document.querySelector('canvas');
+    } else {
+      this.scale = 30;
+      this.canvas = document.querySelector('canvas');
+    }
+    console.log(this.canvas.height)
+
+  }
 
 
 }

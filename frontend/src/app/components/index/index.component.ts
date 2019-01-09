@@ -8,29 +8,32 @@ import {Observable} from "rxjs";
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit{
+export class IndexComponent implements OnInit {
 
   private history = [];
 
   constructor(private checkService: CheckService) {
 
   }
+
   ngOnInit() {
     this.history = this.checkHistory();
   }
 
   @ViewChild('table') table: ElementRef;
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
 
   }
-  checkHistory(){
+
+  checkHistory() {
     this.checkService.checkHistory(localStorage.getItem('token'))
       .subscribe(
         (res) => {
           let amount = Object.keys(res).length;
           this.history = [];
           for (let i = 0; i < amount; i++) {
+            res[i]['result'] = this.ifReaches(res[i]['result']);
             this.history.push(
               {
                 x: res[i]['xValue'],
@@ -48,7 +51,13 @@ export class IndexComponent implements OnInit{
     return JSON.parse(localStorage.getItem('history'));
 
     // console.log(this.history)
-   }
+  }
 
+  ifReaches(data) {
+    if (data)
+      return 'попадание';
+    else
+      return 'промах!';
+  }
 
 }

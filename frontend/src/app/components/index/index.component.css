@@ -1,12 +1,37 @@
 .previous_checks{
   margin: 0 auto;
   border-style: outset;
+  margin-top: 10px;
 }
 
+.title{
+  text-align: center;
+
+}
 
 .previous_checks table{
+  margin: auto;
   margin-bottom: 20px;
   margin-top: 30px;
-  width: 90%;
+  width: 60%;
   border-width: 2px;
+  text-align: center;
+}
+
+@media only screen and (min-width: 723px) and (max-width: 1057px){
+  .previous_checks table{
+    width: 80%;
+    font-size: 1.1em;
+    color: #222;
+    border-collapse: collapse;
+  }
+}
+
+@media only screen and (max-width: 753px){
+  .previous_checks table{
+    border-collapse: collapse;
+    width: 95%;
+    font-size: 1.2em;
+    color: #333;
+  }
 }
