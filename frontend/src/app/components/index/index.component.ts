@@ -1,9 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component,  OnInit} from '@angular/core';
 import {CheckService} from "../../services/check.service";
 
 declare function buildCanvas();
-declare function historyDots();
-declare function draw();
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -45,12 +44,10 @@ export class IndexComponent implements OnInit {
             )
           }
           localStorage.setItem('history', JSON.stringify(this.history));
-          // return res;
         }
       );
     return JSON.parse(localStorage.getItem('history'));
 
-    // console.log(this.history)
   }
 
   ifReaches(data) {

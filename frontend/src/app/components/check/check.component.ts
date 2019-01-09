@@ -1,11 +1,6 @@
-import {Component, HostListener, Input, OnInit, ViewChild, ɵangular_packages_core_core_r} from '@angular/core';
+import {Component,Input, OnInit, } from '@angular/core';
 import {CheckService} from "../../services/check.service";
 import {Router} from "@angular/router";
-
-
-declare function buildCanvas();
-declare function historyDots();
-declare function draw();
 
 @Component({
   selector: 'app-check',
@@ -57,7 +52,7 @@ export class CheckComponent implements OnInit {
   }
 
   ngOnInit() {
-    // buildCanvas();
+
   }
 
 
@@ -87,7 +82,5 @@ export class CheckComponent implements OnInit {
       alert('Выберите корректное значение радиуса r');
     }
   }
-
-
 
 }

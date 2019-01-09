@@ -1,8 +1,4 @@
-// document.onload = function onLoad(e) {
-//   if (location.pathname === '/check') {
 var radius = 100;
-
-// }
 function buildCanvas() {
   console.log('im on check!!!, here i am!!!');
   var canvas = document.getElementById('myCanvas');
@@ -111,6 +107,3 @@ function draw() {
 
   ctx.fillStyle = '#ed1c24';
 }
-
-// };
-

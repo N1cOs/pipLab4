@@ -13,8 +13,6 @@ const routes: Routes = [
   },
   {path: 'check', component: CheckComponent,
     canActivate: [AuthGuard]},
-  {path: 'index', component: IndexComponent,
-    canActivate: [AuthGuard]}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

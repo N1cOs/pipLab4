@@ -8,9 +8,7 @@ import {AuthService} from "../services/auth.service";
 export class LoginGuard implements CanActivate {
 
   constructor(protected  router: Router, protected authService: AuthService) {
-
   }
-
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.authService.isAuthentificated())
       this.router.navigate(['/check']);

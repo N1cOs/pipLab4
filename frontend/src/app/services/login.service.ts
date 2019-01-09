@@ -18,7 +18,6 @@ export class LoginService {
 
   // url to api login
   private loginUrl = 'api/login';
-
   // private loginUrl = 'http://localhost:8080/lab4/api/login';
 
   login(login: string, password: string) {
