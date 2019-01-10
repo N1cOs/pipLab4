@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from "@angular/router";
+import {environment} from '../../environments/environment';
 
 const postOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -10,18 +11,15 @@ const postOptions = {
   providedIn: 'root'
 })
 export class LoginService {
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {
+
+  private loginUrl = environment.apiUrl + '/login';
+
+  constructor(private http: HttpClient, private router: Router) {
+
   }
 
-  // url to api login
-  private loginUrl = 'api/login';
-  // private loginUrl = 'http://localhost:8080/lab4/api/login';
-
   login(login: string, password: string) {
-    var body = {
+    const body = {
       "login": login,
       "password": password
     };
@@ -30,8 +28,7 @@ export class LoginService {
         (data: Response) => {
           this.setToken(data);
           this.router.navigate(['/check']);
-        },
-        err => console.log(err)
+        }
       );
   }
 

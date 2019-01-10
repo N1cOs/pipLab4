@@ -10,7 +10,7 @@ declare function buildCanvas();
 })
 export class IndexComponent implements OnInit {
 
-  private history = [];
+  history = [];
 
   constructor(private checkService: CheckService) {
 

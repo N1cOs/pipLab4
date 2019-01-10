@@ -10,7 +10,7 @@ export class AuthService {
 
   }
 
-  isAuthentificated(): boolean{
+  isAuthenticated(): boolean {
     if (localStorage.getItem('token')) {
       return true;
     }
@@ -27,9 +27,4 @@ export class AuthService {
   route(path: string){
     this.router.navigate(['/'+path]);
   }
-
-  matchPath(path: string): boolean{
-    return this.router.url === path;
-  }
-
 }

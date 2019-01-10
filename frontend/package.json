@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build --deploy-url /lab4/static/",
+    "build": "ng build --prod --deploy-url /lab4/static/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

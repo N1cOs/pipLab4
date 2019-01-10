@@ -9,7 +9,6 @@ import {Router} from "@angular/router";
 })
 export class CheckComponent implements OnInit {
 
-  context: CanvasRenderingContext2D;
   @Input() valueOfX: number;
   @Input() valueOfY: number;
   @Input() valueOfR: number;
