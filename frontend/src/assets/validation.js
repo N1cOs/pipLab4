@@ -1,6 +1,7 @@
 var radius = 100;
+
 function buildCanvas() {
-  console.log('im on check!!!, here i am!!!');
+
   var canvas = document.getElementById('myCanvas');
   var width = canvas.width;
   var height = canvas.height;
@@ -18,23 +19,18 @@ function buildCanvas() {
       historyDots();
     });
   }
-
   draw();
+  document.querySelectorAll('input[type="text"]').forEach((element) => {
+    element.addEventListener('input', replaceY);
+    element.addEventListener('change', replaceY);
 
-  historyDots();
+  });
 
 }
 
-document.querySelectorAll('input[type="text"]').forEach((element) => {
-  element.addEventListener('input', replaceY);
-  element.addEventListener('change', replaceY);
-  console.log('hello');
-
-  function replaceY() {
-    this.value = this.value.replace(/[^0-9.,]/, "");
-  }
-
-});
+function replaceY() {
+  this.value = this.value.replace(/[^0-9.,]/, "");
+}
 
 function historyDots() {
   var canvas = document.getElementById('myCanvas');
@@ -55,7 +51,7 @@ function historyDots() {
       2,
       0,
       Math.PI * 2);
-    if (results[i].innerText!=='попадание') {
+    if (results[i].innerText !== 'попадание') {
       ctx.fillStyle = '#ed1c24';
     } else {
       ctx.fillStyle = '#1f4';

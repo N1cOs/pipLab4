@@ -8,11 +8,13 @@ import {LoginGuard} from './classes/login-guard';
 const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
   {path: 'check', component: CheckComponent, canActivate: [AuthGuard]},
-  {path: '', redirectTo:'/login', pathMatch: 'full'},
-  {path:'**', redirectTo:'/login'}
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: '**', redirectTo: '/login'}
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

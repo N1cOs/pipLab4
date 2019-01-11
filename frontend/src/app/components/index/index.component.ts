@@ -1,60 +1,18 @@
-import {Component,  OnInit} from '@angular/core';
-import {CheckService} from "../../services/check.service";
+import {Component, Input} from '@angular/core';
 
-declare function buildCanvas();
+declare function historyDots();
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent {
 
-  history = [];
+  @Input() history = [];
 
-  constructor(private checkService: CheckService) {
+  constructor() {
 
-  }
-
-  ngOnInit() {
-    this.history = this.checkHistory();
-  }
-
-  ngAfterViewInit() {
-    buildCanvas();
-
-  }
-
-  checkHistory() {
-    this.checkService.checkHistory(localStorage.getItem('token'))
-      .subscribe(
-        (res) => {
-          let amount = Object.keys(res).length;
-          this.history = [];
-          for (let i = 0; i < amount; i++) {
-            res[i]['result'] = this.ifReaches(res[i]['result']);
-            this.history.push(
-              {
-                x: res[i]['xValue'],
-                y: res[i]['yValue'],
-                r: res[i]['rValue'],
-                result: res[i]['result'],
-                date: res[i]['date']
-              }
-            )
-          }
-          localStorage.setItem('history', JSON.stringify(this.history));
-        }
-      );
-    return JSON.parse(localStorage.getItem('history'));
-
-  }
-
-  ifReaches(data) {
-    if (data)
-      return 'попадание';
-    else
-      return 'промах!';
   }
 
 }

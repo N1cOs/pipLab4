@@ -16,7 +16,7 @@
     <div class="clear"></div>
     <div class="y">
       <p>Выберите координату по Y:</p>
-      <input type="text" maxlength="15" [(ngModel)]="valueOfY" name="valueOfY" placeholder="Введите число от -3 до 3">
+      <input class="yInput" type="text" maxlength="15" [(ngModel)]="valueOfY" name="valueOfY" placeholder="Введите число от -3 до 3">
     </div>
     <div class="clear"></div>
     <div class="r">
@@ -37,5 +37,5 @@
             style="border: 2px solid #0a28b4"></canvas>
 
   </form>
-  <app-index></app-index>
+  <app-index [history]="history"></app-index>
 </div>
