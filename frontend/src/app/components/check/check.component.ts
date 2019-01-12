@@ -56,8 +56,6 @@ export class CheckComponent implements OnInit {
   }
 
   constructor(private checkService: CheckService, private route: Router) {
-    //todo fix error in client's console
-    //todo fix error on check component ts (rowindex error)
   }
 
   ngAfterViewInit() {
@@ -114,6 +112,36 @@ export class CheckComponent implements OnInit {
     return correct;
   }
 
+  checkCanvasValues(x, y) {
+    let correct = true;
+    let valueY = y;
+    if (
+      (x > 5) || (x < -3) || (typeof x === 'undefined')
+    ) {
+      this.xErr.style.display = 'inline-block';
+      correct = false;
+    } else {
+      this.xErr.style.display = 'none';
+    }
+    if (
+      (valueY > 3) || (valueY < -3) || (typeof valueY === 'undefined') || (!valueY)
+    ) {
+      this.yErr.style.display = 'inline-block';
+      correct = false;
+    } else {
+      this.yErr.style.display = 'none';
+    }
+    if (
+      (this.valueOfR > 5) || (this.valueOfR < 1) || (typeof this.valueOfR === 'undefined')
+    ) {
+      this.rErr.style.display = 'inline-block';
+      correct = false;
+    } else {
+      this.rErr.style.display = 'none';
+    }
+
+    return correct;
+  }
 
   checkResults() {
     if (this.checkValues()) {
@@ -152,11 +180,13 @@ export class CheckComponent implements OnInit {
     let MP = this.getMP(canvas, e);
     this.valueOfX = parseFloat(((MP.x - canvas.width / 2) / scale)
       .toFixed(3));
+    let x = this.valueOfX;
     this.valueOfY = -1 * parseFloat(((MP.y - canvas.height / 2) / scale)
       .toFixed(3));
-    if (this.checkValues()) {
+    let y = this.valueOfY;
+    if (this.checkCanvasValues(x, y)) {
       let token = localStorage.getItem('token');
-      this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfR, token)
+      this.checkService.check(x, y, this.valueOfR, token)
         .subscribe((res: Response) => {
           res['result'] = this.ifReaches(res['result']);
           this.history.push({
