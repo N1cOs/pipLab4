@@ -29,8 +29,7 @@ function buildCanvas() {
 }
 
 function replaceY() {
-  this.value = this.value.replace(/[^0-9.,]/, "");
-  //todo let user type in negative numbers
+  this.value = this.value.replace(/[^0-9-.,]/, "");
 }
 
 function historyDots() {
@@ -52,7 +51,7 @@ function historyDots() {
       2,
       0,
       Math.PI * 2);
-    if (results[i].innerText !== 'попадание') {
+    if (results[i].innerText !== 'Попадание') {
       ctx.fillStyle = '#ed1c24';
     } else {
       ctx.fillStyle = '#1f4';

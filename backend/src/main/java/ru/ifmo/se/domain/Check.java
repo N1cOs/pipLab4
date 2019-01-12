@@ -11,7 +11,7 @@ import java.util.Date;
 @Table(name = "results")
 @NamedQueries(
         @NamedQuery(name = "Check.historyByUserId", query = "select c " +
-                "from Check c join c.user u where u.id = :id_user")
+                "from Check c join c.user u where u.id = :id_user order by c.date desc")
 )
 public class Check implements Serializable {
 

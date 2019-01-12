@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChange,} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, SimpleChange,} from '@angular/core';
 import {CheckService} from "../../services/check.service";
 import {Router} from "@angular/router";
 
@@ -11,7 +11,7 @@ declare function historyDots();
   templateUrl: './check.component.html',
   styleUrls: ['./check.component.css']
 })
-export class CheckComponent implements OnInit {
+export class CheckComponent implements OnInit, AfterViewInit {
 
   @Input() valueOfX: number;
   @Input() valueOfY: number;
@@ -19,7 +19,6 @@ export class CheckComponent implements OnInit {
   xErr: any;
   yErr: any;
   rErr: any;
-  answer: string;
   history = [];
 
   checkHistory() {
@@ -30,15 +29,13 @@ export class CheckComponent implements OnInit {
           this.history = [];
           for (let i = 0; i < amount; i++) {
             res[i]['result'] = this.ifReaches(res[i]['result']);
-            this.history.push(
-              {
-                x: res[i]['xValue'],
-                y: res[i]['yValue'],
-                r: res[i]['rValue'],
-                result: res[i]['result'],
-                date: res[i]['date']
-              }
-            );
+            this.history.push( {
+              x: res[i]['xValue'],
+              y: res[i]['yValue'],
+              r: res[i]['rValue'],
+              result: res[i]['result'],
+              date: res[i]['date']
+            });
 
           }
           localStorage.setItem('history', JSON.stringify(this.history));
@@ -50,9 +47,9 @@ export class CheckComponent implements OnInit {
 
   ifReaches(data) {
     if (data)
-      return 'попадание';
+      return 'Попадание';
     else
-      return 'промах!';
+      return 'Промах';
   }
 
   constructor(private checkService: CheckService, private route: Router) {
@@ -61,13 +58,13 @@ export class CheckComponent implements OnInit {
   ngAfterViewInit() {
     buildCanvas();
     let target = document.querySelector('tbody');
-    var mutationObserver = new MutationObserver(function (mutations) {
+    const mutationObserver = new MutationObserver(function (mutations) {
       let length = target.rows.length;
       mutations.forEach((mutation) => {
-        if (mutation.type == "childList" &&
-          (mutation.addedNodes != NodeList[0])
+        if (mutation.type == "childList"
+          && (mutation.addedNodes != NodeList[0])
           && mutation.addedNodes.length != 0
-          && mutation.addedNodes.item(0).rowIndex == length - 1) {
+          && (<any> mutation.addedNodes.item(0)).rowIndex == length - 1) {
           historyDots();
         }
       })
@@ -146,10 +143,11 @@ export class CheckComponent implements OnInit {
   checkResults() {
     if (this.checkValues()) {
       let token = localStorage.getItem('token');
+      this.valueOfY = parseFloat(this.valueOfY.toString(10).replace(',', '.'));
       this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfR, token)
         .subscribe((res: Response) => {
           res['result'] = this.ifReaches(res['result']);
-          this.history.push({
+          this.history.splice(0, 0, {
             x: res['xValue'],
             y: res['yValue'],
             r: res['rValue'],
@@ -189,7 +187,7 @@ export class CheckComponent implements OnInit {
       this.checkService.check(x, y, this.valueOfR, token)
         .subscribe((res: Response) => {
           res['result'] = this.ifReaches(res['result']);
-          this.history.push({
+          this.history.splice(0, 0, {
             x: res['xValue'],
             y: res['yValue'],
             r: res['rValue'],
