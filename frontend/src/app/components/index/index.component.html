@@ -3,19 +3,24 @@
 
   <table id="history_table" border="1">
     <thead>
-    <th>x</th>
-    <th>y</th>
-    <th>r</th>
-    <th>результат проверки</th>
-    <th>дата</th>
+      <tr>
+        <th>Дата проверки</th>
+        <th>Координата Х</th>
+        <th>Координата Y</th>
+        <th>Радиус</th>
+        <th>Результат</th>
+      </tr>
     </thead>
 
     <tbody id="tbody">
     <tr *ngFor="let bit of history">
-      <td class="x_coord">
+      <td>
+        {{bit.date}}
+      </td>
+      <td>
         {{bit.x}}
       </td>
-      <td class="y_coord">
+      <td>
         {{bit.y}}
       </td>
       <td>
@@ -24,10 +29,6 @@
       <td class="result">
         {{bit.result}}
       </td>
-      <td>
-        {{bit.date}}
-      </td>
-
     </tr>
     </tbody>
   </table>
