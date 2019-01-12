@@ -37,9 +37,9 @@ public class CheckAreaBean {
         if(xValue >= 0 && xValue <= rValue / 2 && yValue >= 0 && yValue <= rValue)
             result = true;
         else if(xValue <= 0 && xValue >= -rValue){
-            if(Math.pow(xValue, 2) + Math.pow(yValue, 2) <= Math.pow(rValue, 2))
+            if(yValue <= 0 && Math.pow(xValue, 2) + Math.pow(yValue, 2) <= Math.pow(rValue, 2))
                 result = true;
-            else if(yValue <= 0.5 * (xValue + rValue))
+            else if(yValue >= 0 && yValue <= 0.5 * (xValue + rValue))
                 result = true;
         }
         check.setResult(result);
