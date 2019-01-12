@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild,} from '@angular/core';
 import {CheckService} from '../../services/check.service';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Check} from '../../interfaces/check';
 
 
@@ -26,20 +26,23 @@ export class CheckComponent implements OnInit, AfterViewInit {
   rValues:number[] = [];
 
   coordinatesForm:FormGroup;
+  readonly xFormName:string = 'valueOfX';
+  readonly yFormName:string = 'valueOfY';
+  readonly rFormName:string = 'valueOfR';
 
   history:Check[] = [];
 
 
   constructor(private fb:FormBuilder, private checkService: CheckService) {
     this.coordinatesForm = fb.group({
-      'valueOfX':[null, Validators.compose([
+      [this.xFormName]:[null, Validators.compose([
         Validators.required, Validators.min(this.xMin), Validators.max(this.xMax)
       ])],
-      'valueOfY':[null, Validators.compose([
+      [this.yFormName]:[null, Validators.compose([
         Validators.required, Validators.pattern('^[+-]?([0-9]*[.,])?[0-9]*$'),
         Validators.min(this.yMin), Validators.max(this.yMax)
       ])],
-      'valueOfR':[null, Validators.compose([
+      [this.rFormName]:[null, Validators.compose([
         Validators.required, Validators.min(this.rMin), Validators.max(this.rMax)
       ])]
     });
@@ -79,12 +82,33 @@ export class CheckComponent implements OnInit, AfterViewInit {
       });
   }
 
+  submitCanvas(event){
+    let scale = 20;
+    let canvas = this.canvasRef.nativeElement;
+    let MP = this.getWithOffset(canvas, event);
+    this.coordinatesForm.patchValue({
+      [this.xFormName] : parseFloat(((MP.x - canvas.width / 2) / scale).toFixed(3)),
+      [this.yFormName] : -1 * parseFloat(((MP.y - canvas.height / 2) / scale).toFixed(3))
+    });
+    if(this.coordinatesForm.valid)
+      this.onSubmit(this.coordinatesForm.value);
+    else
+      console.log('message');
+  }
+
+  getWithOffset(canvas, event) {
+    let rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left - 5,
+      y: event.clientY - rect.top - 5
+    };
+  }
+
   drawCanvas(){
     const canvas = this.canvasRef.nativeElement;
     const width = canvas.width;
     const height = canvas.height;
     const coordCenter = width / 2;
-    const scale = 20;
     const radius = 100;
     const ctx = canvas.getContext('2d');
 
