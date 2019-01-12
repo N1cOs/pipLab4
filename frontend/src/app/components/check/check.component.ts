@@ -1,6 +1,6 @@
-import {Component, Input, OnInit, SimpleChange,} from '@angular/core';
-import {CheckService} from "../../services/check.service";
-import {Router} from "@angular/router";
+import {AfterViewInit, Component, Input, OnInit,} from '@angular/core';
+import {CheckService} from '../../services/check.service';
+import {Router} from '@angular/router';
 
 declare function buildCanvas();
 
@@ -11,16 +11,37 @@ declare function historyDots();
   templateUrl: './check.component.html',
   styleUrls: ['./check.component.css']
 })
-export class CheckComponent implements OnInit {
+export class CheckComponent implements OnInit, AfterViewInit {
 
   @Input() valueOfX: number;
   @Input() valueOfY: number;
   @Input() valueOfR: number;
+
+  xValues:number[] = [];
+  rValues:number[] = [];
+  readonly xMin:number = -3;
+  readonly xMax:number = 5;
+  readonly rMin:number = -3;
+  readonly rMax:number = 5;
+
   xErr: any;
   yErr: any;
   rErr: any;
-  answer: string;
   history = [];
+
+  constructor(private checkService: CheckService) {
+
+  }
+
+  ngOnInit() {
+    this.history = this.checkHistory();
+
+    for(let i = this.xMin; i <= this.xMax; i++)
+      this.xValues.push(i);
+
+    for(let i = this.rMin; i <= this.rMax; i++)
+      this.rValues.push(i);
+  }
 
   checkHistory() {
     this.checkService.checkHistory(localStorage.getItem('token'))
@@ -49,35 +70,13 @@ export class CheckComponent implements OnInit {
   }
 
   ifReaches(data) {
-    if (data)
-      return 'попадание';
-    else
-      return 'промах!';
-  }
-
-  constructor(private checkService: CheckService, private route: Router) {
-    //todo fix error in client's console
-    //todo fix error on check component ts (rowindex error)
+    return data ? 'Попадание' : 'Промах';
   }
 
   ngAfterViewInit() {
     buildCanvas();
-    let target = document.querySelector('tbody');
-    var mutationObserver = new MutationObserver(function (mutations) {
-      let length = target.rows.length;
-      mutations.forEach((mutation) => {
-        if (mutation.type == "childList" &&
-          (mutation.addedNodes != NodeList[0])
-          && mutation.addedNodes.length != 0
-          && mutation.addedNodes.item(0).rowIndex == length - 1) {
-          historyDots();
-        }
-      })
-    });
+    const target = document.querySelector('tbody');
 
-    mutationObserver.observe(target, {
-      childList: true
-    });
     this.xErr = document.getElementById('x-err');
     this.yErr = document.getElementById('y-err');
     this.rErr = document.getElementById('r-err');
@@ -95,7 +94,7 @@ export class CheckComponent implements OnInit {
       this.xErr.style.display = 'none';
     }
     if (
-      (this.valueOfY > 3) || (this.valueOfY < -3) || (typeof this.valueOfY === 'undefined') || (!this.valueOfY) || (this.valueOfY == '')
+      (this.valueOfY > 3) || (this.valueOfY < -3) || (typeof this.valueOfY === 'undefined') || (!this.valueOfY)
     ) {
       //todo fix validation of y (when we are typing unmatchble with our regex, one character stores in y. no matter
       // where it is - in the end of expression or in the beginning. idea - validate as taking value of y, not this.y)
@@ -136,9 +135,6 @@ export class CheckComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.history = this.checkHistory();
-  }
 
 
   getMP(canvas, event) {

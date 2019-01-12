@@ -16,7 +16,6 @@ export class LoginComponent {
   }
 
   logIn() {
-    console.log(this.login, this.password);
     this.loginService.login(this.login, this.password);
   }
 }
