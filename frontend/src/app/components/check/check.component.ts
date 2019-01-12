@@ -64,12 +64,12 @@ export class CheckComponent implements OnInit, AfterViewInit {
         if (mutation.type == "childList"
           && (mutation.addedNodes != NodeList[0])
           && mutation.addedNodes.length != 0
-          && (<any> mutation.addedNodes.item(0)).rowIndex == length - 1) {
+          && (<any> mutation.addedNodes.item(0)).rowIndex == 0) {
           historyDots();
         }
       })
     });
-
+    historyDots();
     mutationObserver.observe(target, {
       childList: true
     });
