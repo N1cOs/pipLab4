@@ -30,6 +30,7 @@ function buildCanvas() {
 
 function replaceY() {
   this.value = this.value.replace(/[^0-9.,]/, "");
+
 }
 
 function historyDots() {

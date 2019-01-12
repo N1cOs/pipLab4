@@ -16,6 +16,9 @@ export class CheckComponent implements OnInit {
   @Input() valueOfX: number;
   @Input() valueOfY: number;
   @Input() valueOfR: number;
+  xErr: any;
+  yErr: any;
+  rErr: any;
   answer: string;
   history = [];
 
@@ -75,28 +78,40 @@ export class CheckComponent implements OnInit {
     mutationObserver.observe(target, {
       childList: true
     });
+    this.xErr = document.getElementById('x-err');
+    this.yErr = document.getElementById('y-err');
+    this.rErr = document.getElementById('r-err');
   }
 
   checkValues() {
     let correct = true;
+
     if (
       (this.valueOfX > 5) || (this.valueOfX < -3) || (typeof this.valueOfX === 'undefined')
     ) {
-      alert('x is incorect');
+      this.xErr.style.display = 'inline-block';
       correct = false;
+    } else {
+      this.xErr.style.display = 'none';
     }
     if (
-      (this.valueOfY > 3) || (this.valueOfY < -3) || (typeof this.valueOfY === 'undefined') || (!this.valueOfY)
+      (this.valueOfY > 3) || (this.valueOfY < -3) || (typeof this.valueOfY === 'undefined') || (!this.valueOfY) || (this.valueOfY == '')
     ) {
-      alert('y is incorrect');
+      //todo fix validation of y (when we are typing unmatchble with our regex, one character stores in y. no matter
+      // where it is - in the end of expression or in the beginning. idea - validate as taking value of y, not this.y)
+      //todo let user type in negative numbers
+      this.yErr.style.display = 'inline-block';
       correct = false;
+    } else {
+      this.yErr.style.display = 'none';
     }
     if (
       (this.valueOfR > 5) || (this.valueOfR < 1) || (typeof this.valueOfR === 'undefined')
     ) {
-      alert('r is incorrect');
-      console.log(this.valueOfR);
+      this.rErr.style.display = 'inline-block';
       correct = false;
+    } else {
+      this.rErr.style.display = 'none';
     }
 
     return correct;
@@ -154,7 +169,6 @@ export class CheckComponent implements OnInit {
             result: res['result'],
             date: res['date']
           });
-          historyDots();
         });
     }
 

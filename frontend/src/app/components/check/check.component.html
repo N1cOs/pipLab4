@@ -1,7 +1,7 @@
 <div class="content">
   <form id="area_form" class="choose" method="post" action="/index">
     <div class="x">
-      <p>Выберите координату по X:</p>
+      <p>Выберите координату по X: <span id="x-err" style="color: red; display: none">ошибка X</span></p>
 
       <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="-3">-3<br>
       <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="-2">-2<br>
@@ -15,12 +15,12 @@
     </div>
     <div class="clear"></div>
     <div class="y">
-      <p>Выберите координату по Y:</p>
+      <p>Выберите координату по Y:<span id="y-err" style="color: red; display: none">ошибка Y</span></p>
       <input class="yInput" type="text" maxlength="15" [(ngModel)]="valueOfY" name="valueOfY" placeholder="Введите число от -3 до 3">
     </div>
     <div class="clear"></div>
     <div class="r">
-      <p>Выберите значение радиуса R:</p>
+      <p>Выберите значение радиуса R:<span id="r-err" style="color: red; display: none">ошибка R</span></p>
 
       <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="-3">-3<br>
       <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="-2">-2<br>
