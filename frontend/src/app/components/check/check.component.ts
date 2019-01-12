@@ -85,7 +85,7 @@ export class CheckComponent implements OnInit {
 
   checkValues() {
     let correct = true;
-
+    let valueY = parseFloat((<HTMLInputElement>document.getElementsByName('valueOfY')[0]).value);
     if (
       (this.valueOfX > 5) || (this.valueOfX < -3) || (typeof this.valueOfX === 'undefined')
     ) {
@@ -95,11 +95,8 @@ export class CheckComponent implements OnInit {
       this.xErr.style.display = 'none';
     }
     if (
-      (this.valueOfY > 3) || (this.valueOfY < -3) || (typeof this.valueOfY === 'undefined') || (!this.valueOfY) || (this.valueOfY == '')
+      (valueY > 3) || (valueY < -3) || (typeof valueY === 'undefined') || (!valueY)
     ) {
-      //todo fix validation of y (when we are typing unmatchble with our regex, one character stores in y. no matter
-      // where it is - in the end of expression or in the beginning. idea - validate as taking value of y, not this.y)
-      //todo let user type in negative numbers
       this.yErr.style.display = 'inline-block';
       correct = false;
     } else {

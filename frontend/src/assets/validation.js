@@ -30,7 +30,7 @@ function buildCanvas() {
 
 function replaceY() {
   this.value = this.value.replace(/[^0-9.,]/, "");
-
+  //todo let user type in negative numbers
 }
 
 function historyDots() {
