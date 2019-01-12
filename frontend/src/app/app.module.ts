@@ -6,7 +6,7 @@ import {IndexComponent} from './components/index/index.component';
 import {CheckComponent} from './components/check/check.component';
 import {AppRoutingModule} from './app-routing.module';
 import {LoginComponent} from './components/login/login.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthGuard} from "./classes/auth-guard";
 import {LoginGuard} from "./classes/login-guard";
 
@@ -21,7 +21,8 @@ import {LoginGuard} from "./classes/login-guard";
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ AuthGuard, LoginGuard],
   bootstrap: [AppComponent]

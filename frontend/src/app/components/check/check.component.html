@@ -1,12 +1,15 @@
 <div class="content">
-  <form id="area_form" class="choose" method="post">
+  <form [formGroup]="coordinatesForm" (ngSubmit)="onSubmit(coordinatesForm.value)"
+        id="area_form" class="choose">
     <div class="x">
-      <p>Выберите координату по X:
-        <span id="x-err" class="error_message">ошибка X</span>
-      </p>
+      <p>Выберите координату по X:</p>
 
+      <div *ngIf="coordinatesForm.controls['valueOfX'].invalid &&
+      coordinatesForm.controls['valueOfX'].touched">
+        Выберите значение координаты X от {{xMin}} до {{xMax}}
+      </div>
       <span *ngFor="let x of xValues">
-        <input id="{{'x'+ x}}" [(ngModel)]="valueOfX" [value]="x" type="radio" name="valueOfX">
+        <input id="{{'x'+ x}}" formControlName="valueOfX" [value]="x" type="radio" name="valueOfX">
         <label for="{{'x'+ x}}">{{x}}</label>
       </span>
     </div>
@@ -14,26 +17,28 @@
     <div class="clear"></div>
 
     <div class="y">
-      <p>Выберите координату по Y:
-        <span id="y-err" class="error_message">ошибка Y</span>
-      </p>
-      <input class="yInput" type="text" maxlength="15" [(ngModel)]="valueOfY" name="valueOfY" placeholder="Введите число от -3 до 3">
+      <p>Выберите координату по Y:</p>
+      <div  *ngIf="coordinatesForm.controls['valueOfY'].invalid &&
+      coordinatesForm.controls['valueOfY'].touched" class="validation_error">
+        Выберите значение координаты Y от {{yMin}} до {{yMax}}
+      </div>
+      <input formControlName="valueOfY" class="yInput" type="text"
+             maxlength="15" name="valueOfY" placeholder="Введите число от -3 до 3">
     </div>
 
     <div class="clear"></div>
 
     <div class="r">
-      <p>Выберите значение радиуса R:
-        <span id="r-err" class="error_message">ошибка R</span>
-      </p>
+      <p>Выберите значение радиуса R:</p>
 
-      <span *ngFor="let r of xValues">
-        <input id="{{'r' + r}}" [(ngModel)]="valueOfR" [value]="r" type="radio" name="valueOfR">
+      <span *ngFor="let r of rValues">
+        <input id="{{'r' + r}}" formControlName="valueOfR" [value]="r"
+               type="radio" name="valueOfR">
         <label for="{{'r' + r}}">{{r}}</label>
       </span>
     </div>
 
-    <button>Check!</button>
+    <button type="submit" [disabled]="coordinatesForm.invalid">Check</button>
     <canvas id="myCanvas" width="300" height="300"
             style="border: 2px solid #0a28b4"></canvas>
   </form>

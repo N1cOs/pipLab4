@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Check} from '../interfaces/check';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -8,28 +10,26 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 export class CheckService {
 
 
-  private history = [];
-
   // url to api login
-  private checkUrl = 'api/check';
-  // private checkUrl = 'http://localhost:8080/lab4/api/check';
-  private checkHistoryUrl = 'api/check/history';
+  private checkUrl = environment.apiUrl + '/check';
+  private checkHistoryUrl = this.checkUrl + '/history';
 
   constructor(private http: HttpClient) {
 
   }
 
-  check(valueX: number, valueY: number, valueR: number, token: string) {
-    var body = {
-      "x": valueX,
-      "y": valueY,
-      "r": valueR
+  check(check:Check, token: string) {
+    const request = {
+      x: check.valueOfX,
+      y: check.valueOfY.toString(10).replace(',', '.'),
+      r: check.valueOfR
     };
 
-    var postOptions = {
+    const postOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token})
     };
-    return this.http.post(this.checkUrl, body, postOptions);
+
+    return this.http.post(this.checkUrl, request, postOptions);
   }
 
   checkHistory(token: string) {
