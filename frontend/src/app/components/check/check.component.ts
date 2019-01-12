@@ -18,10 +18,13 @@ export class CheckComponent implements OnInit {
   readonly rMin:number = 1;
   readonly rMax:number = 5;
 
-  coordinatesForm:FormGroup;
-
   xValues:number[] = [];
   rValues:number[] = [];
+
+  coordinatesForm:FormGroup;
+
+  history:Check[];
+
 
   constructor(private fb:FormBuilder, private checkService: CheckService) {
     this.coordinatesForm = fb.group({
@@ -44,13 +47,27 @@ export class CheckComponent implements OnInit {
 
     for(let i = this.rMin; i <= this.rMax; i++)
       this.rValues.push(i);
+
+    this.initHistory();
   }
 
-  onSubmit(check:Check){
-    this.checkService.check(check, localStorage.getItem('token')).
-    subscribe((data) => {
-
+  onSubmit(check:any){
+    const request = {
+      x: check.valueOfX,
+      y: check.valueOfY,
+      r: check.valueOfR,
+    };
+    this.checkService.check(request, localStorage.getItem('token'))
+      .subscribe((data:Check) => {
+      this.history.splice(0, 0, data);
     });
+  }
+
+  private initHistory(){
+    this.checkService.checkHistory(localStorage.getItem('token'))
+      .subscribe((results:Check[]) =>{
+        this.history = results;
+      });
   }
 
 }

@@ -1,5 +1,7 @@
 export interface Check {
-  valueOfX:number,
-  valueOfY:number,
-  valueOfR:number
+  xValue:number,
+  yValue:number,
+  rValue:number,
+  result?:boolean,
+  date?:string
 }
