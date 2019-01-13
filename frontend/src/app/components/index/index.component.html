@@ -3,31 +3,32 @@
 
   <table id="history_table" border="1">
     <thead>
+    <tr>
+      <th>Дата проверки</th>
       <th>Координата Х</th>
       <th>Координата Y</th>
       <th>Радиус</th>
-      <th>Результат проверки</th>
-      <th>Дата</th>
+      <th>Результат</th>
+    </tr>
     </thead>
 
     <tbody id="tbody">
     <tr *ngFor="let bit of history">
-      <td class="x_coord">
-        {{bit.x}}
-      </td>
-      <td class="y_coord">
-        {{bit.y}}
-      </td>
-      <td>
-        {{bit.r}}
-      </td>
-      <td class="result">
-        {{bit.result}}
-      </td>
       <td>
         {{bit.date}}
       </td>
-
+      <td>
+        {{bit.xValue}}
+      </td>
+      <td>
+        {{bit.yValue}}
+      </td>
+      <td>
+        {{bit.rValue}}
+      </td>
+      <td class="result">
+        {{bit.result ? 'Попадание' : 'Промах'}}
+      </td>
     </tr>
     </tbody>
   </table>

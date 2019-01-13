@@ -1,10 +1,8 @@
-import {AfterViewInit, Component, Input, OnInit, SimpleChange,} from '@angular/core';
-import {CheckService} from "../../services/check.service";
-import {Router} from "@angular/router";
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild,} from '@angular/core';
+import {CheckService} from '../../services/check.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Check} from '../../interfaces/check';
 
-declare function buildCanvas();
-
-declare function historyDots();
 
 @Component({
   selector: 'app-check',
@@ -13,191 +11,164 @@ declare function historyDots();
 })
 export class CheckComponent implements OnInit, AfterViewInit {
 
-  @Input() valueOfX: number;
-  @Input() valueOfY: number;
-  @Input() valueOfR: number;
-  xErr: any;
-  yErr: any;
-  rErr: any;
-  history = [];
+  @ViewChild('myCanvas')
+  canvasRef:ElementRef;
 
-  checkHistory() {
-    this.checkService.checkHistory(localStorage.getItem('token'))
-      .subscribe(
-        (res) => {
-          let amount = Object.keys(res).length;
-          this.history = [];
-          for (let i = 0; i < amount; i++) {
-            res[i]['result'] = this.ifReaches(res[i]['result']);
-            this.history.push( {
-              x: res[i]['xValue'],
-              y: res[i]['yValue'],
-              r: res[i]['rValue'],
-              result: res[i]['result'],
-              date: res[i]['date']
-            });
 
-          }
-          localStorage.setItem('history', JSON.stringify(this.history));
-        }
-      );
-    return JSON.parse(localStorage.getItem('history'));
+  readonly xMin:number = -3;
+  readonly xMax:number = 5;
+  readonly yMin:number = -3;
+  readonly yMax:number = 3;
+  readonly rMin:number = 1;
+  readonly rMax:number = 5;
 
-  }
+  xValues:number[] = [];
+  rValues:number[] = [];
 
-  ifReaches(data) {
-    if (data)
-      return 'Попадание';
-    else
-      return 'Промах';
-  }
+  coordinatesForm:FormGroup;
+  readonly xFormName:string = 'valueOfX';
+  readonly yFormName:string = 'valueOfY';
+  readonly rFormName:string = 'valueOfR';
 
-  constructor(private checkService: CheckService, private route: Router) {
-  }
+  history:Check[] = [];
 
-  ngAfterViewInit() {
-    buildCanvas();
-    let target = document.querySelector('tbody');
-    const mutationObserver = new MutationObserver(function (mutations) {
-      let length = target.rows.length;
-      mutations.forEach((mutation) => {
-        if (mutation.type == "childList"
-          && (mutation.addedNodes != NodeList[0])
-          && mutation.addedNodes.length != 0
-          && (<any> mutation.addedNodes.item(0)).rowIndex == 0) {
-          historyDots();
-        }
-      })
+
+  constructor(private fb:FormBuilder, private checkService: CheckService) {
+    this.coordinatesForm = fb.group({
+      [this.xFormName]:[null, Validators.compose([
+        Validators.required, Validators.min(this.xMin), Validators.max(this.xMax)
+      ])],
+      [this.yFormName]:[null, Validators.compose([
+        Validators.required, Validators.pattern('^[+-]?([0-9]*[.,])?[0-9]*$'),
+        Validators.min(this.yMin), Validators.max(this.yMax)
+      ])],
+      [this.rFormName]:[null, Validators.compose([
+        Validators.required, Validators.min(this.rMin), Validators.max(this.rMax)
+      ])]
     });
-    historyDots();
-    mutationObserver.observe(target, {
-      childList: true
-    });
-    this.xErr = document.getElementById('x-err');
-    this.yErr = document.getElementById('y-err');
-    this.rErr = document.getElementById('r-err');
-  }
-
-  checkValues() {
-    let correct = true;
-    let valueY = parseFloat((<HTMLInputElement>document.getElementsByName('valueOfY')[0]).value);
-    if (
-      (this.valueOfX > 5) || (this.valueOfX < -3) || (typeof this.valueOfX === 'undefined')
-    ) {
-      this.xErr.style.display = 'inline-block';
-      correct = false;
-    } else {
-      this.xErr.style.display = 'none';
-    }
-    if (
-      (valueY > 3) || (valueY < -3) || (typeof valueY === 'undefined') || (!valueY)
-    ) {
-      this.yErr.style.display = 'inline-block';
-      correct = false;
-    } else {
-      this.yErr.style.display = 'none';
-    }
-    if (
-      (this.valueOfR > 5) || (this.valueOfR < 1) || (typeof this.valueOfR === 'undefined')
-    ) {
-      this.rErr.style.display = 'inline-block';
-      correct = false;
-    } else {
-      this.rErr.style.display = 'none';
-    }
-
-    return correct;
-  }
-
-  checkCanvasValues(x, y) {
-    let correct = true;
-    let valueY = y;
-    if (
-      (x > 5) || (x < -3) || (typeof x === 'undefined')
-    ) {
-      this.xErr.style.display = 'inline-block';
-      correct = false;
-    } else {
-      this.xErr.style.display = 'none';
-    }
-    if (
-      (valueY > 3) || (valueY < -3) || (typeof valueY === 'undefined') || (!valueY)
-    ) {
-      this.yErr.style.display = 'inline-block';
-      correct = false;
-    } else {
-      this.yErr.style.display = 'none';
-    }
-    if (
-      (this.valueOfR > 5) || (this.valueOfR < 1) || (typeof this.valueOfR === 'undefined')
-    ) {
-      this.rErr.style.display = 'inline-block';
-      correct = false;
-    } else {
-      this.rErr.style.display = 'none';
-    }
-
-    return correct;
-  }
-
-  checkResults() {
-    if (this.checkValues()) {
-      let token = localStorage.getItem('token');
-      this.valueOfY = parseFloat(this.valueOfY.toString(10).replace(',', '.'));
-      this.checkService.check(this.valueOfX, this.valueOfY, this.valueOfR, token)
-        .subscribe((res: Response) => {
-          res['result'] = this.ifReaches(res['result']);
-          this.history.splice(0, 0, {
-            x: res['xValue'],
-            y: res['yValue'],
-            r: res['rValue'],
-            result: res['result'],
-            date: res['date']
-          });
-          historyDots();
-        });
-    }
   }
 
   ngOnInit() {
-    this.history = this.checkHistory();
+    for (let i = this.xMin; i <= this.xMax; i++)
+      this.xValues.push(i);
+
+    for (let i = this.rMin; i <= this.rMax; i++)
+      this.rValues.push(i);
   }
 
+  ngAfterViewInit(): void {
+    this.initHistory();
+    this.drawCanvas();
+  }
 
-  getMP(canvas, event) {
+  onSubmit(check:any){
+    const request = {
+      x: check.valueOfX,
+      y: check.valueOfY,
+      r: check.valueOfR,
+    };
+    this.checkService.check(request, localStorage.getItem('token'))
+      .subscribe((data:Check) => {
+        this.history.splice(0, 0, data);
+        this.historyDots();
+      });
+  }
+
+  private initHistory(){
+    this.checkService.checkHistory(localStorage.getItem('token'))
+      .subscribe((results:Check[]) =>{
+        this.history = results;
+        this.historyDots();
+      });
+  }
+
+  submitCanvas(event){
+    let scale = 20;
+    let canvas = this.canvasRef.nativeElement;
+    let MP = this.getWithOffset(canvas, event);
+    this.coordinatesForm.patchValue({
+      [this.xFormName] : parseFloat(((MP.x - canvas.width / 2) / scale).toFixed(3)),
+      [this.yFormName] : -1 * parseFloat(((MP.y - canvas.height / 2) / scale).toFixed(3))
+    });
+
+    for(let i in this.coordinatesForm.controls)
+      this.coordinatesForm.controls[i].markAsTouched();
+
+    if(this.coordinatesForm.valid)
+      this.onSubmit(this.coordinatesForm.value);
+  }
+
+  getWithOffset(canvas, event) {
     let rect = canvas.getBoundingClientRect();
     return {
-      x: event.clientX - rect.left - 5,
-      y: event.clientY - rect.top - 5
+      x: event.clientX - rect.left - 2,
+      y: event.clientY - rect.top - 2
     };
   }
 
-  canvasListener(e) {
-    let scale = 20;
-    let canvas = document.querySelector('canvas');
-    let MP = this.getMP(canvas, e);
-    this.valueOfX = parseFloat(((MP.x - canvas.width / 2) / scale)
-      .toFixed(3));
-    let x = this.valueOfX;
-    this.valueOfY = -1 * parseFloat(((MP.y - canvas.height / 2) / scale)
-      .toFixed(3));
-    let y = this.valueOfY;
-    if (this.checkCanvasValues(x, y)) {
-      let token = localStorage.getItem('token');
-      this.checkService.check(x, y, this.valueOfR, token)
-        .subscribe((res: Response) => {
-          res['result'] = this.ifReaches(res['result']);
-          this.history.splice(0, 0, {
-            x: res['xValue'],
-            y: res['yValue'],
-            r: res['rValue'],
-            result: res['result'],
-            date: res['date']
-          });
-        });
-    }
+  drawCanvas(){
+    const canvas = this.canvasRef.nativeElement;
+    const width = canvas.width;
+    const height = canvas.height;
+    const coordCenter = width / 2;
+    const radius = 100;
+    const ctx = canvas.getContext('2d');
 
+    ctx.beginPath();
+    let startangel = 90 * Math.PI / 180;
+    let endangel = 180 * Math.PI / 180;
+    ctx.arc(coordCenter, coordCenter, radius, startangel, endangel, false);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.moveTo(width / 2, height / 2 + radius);
+    ctx.lineTo(width / 2 - radius, height / 2);
+    ctx.lineTo(width / 2, height / 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.rect(width / 2, height / 2 - radius, radius / 2, radius);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(width / 2, height / 2 - radius / 2);
+    ctx.lineTo(width / 2 - radius, height / 2);
+    ctx.lineTo(width / 2, height / 2);
+    ctx.fill();
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.strokeStyle = 'black';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0, height / 2);
+    ctx.lineTo(width, height / 2);
+    ctx.strokeStyle = '#000';
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(width / 2, 0);
+    ctx.lineTo(width / 2, height);
+    ctx.stroke();
+
+    ctx.fillStyle = '#ed1c24';
   }
 
+  historyDots(){
+    const canvas = this.canvasRef.nativeElement;
+    const width = canvas.width;
+    const height = canvas.height;
+    const scale = 20;
+    const ctx = canvas.getContext('2d');
 
+    for(let check of this.history){
+      ctx.beginPath();
+      ctx.arc(check.xValue * scale + width / 2,
+        height / 2 - check.yValue * scale,
+        2,
+        0,
+        Math.PI * 2);
+      if(check.result)
+        ctx.fillStyle = '#1f4';
+      else
+        ctx.fillStyle = '#ed1c24';
+      ctx.fill();
+    }
+  }
 }

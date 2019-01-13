@@ -1,41 +1,49 @@
 <div class="content">
-  <form id="area_form" class="choose" method="post" action="/index">
+  <form [formGroup]="coordinatesForm" (ngSubmit)="onSubmit(coordinatesForm.value)"
+        id="area_form" class="choose">
     <div class="x">
-      <p>Выберите координату по X: <span id="x-err" style="color: red; display: none">ошибка X</span></p>
+      <p>Выберите координату по X:</p>
 
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="-3">-3<br>
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="-2">-2<br>
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="-1">-1<br>
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="0">0<br>
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="1">1<br>
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="2">2<br>
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="3">3<br>
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="4">4<br>
-      <input type="radio" [(ngModel)]="valueOfX" name="valueOfX" value="5">5<br>
+      <div *ngIf="coordinatesForm.controls[xFormName].invalid &&
+      coordinatesForm.controls[xFormName].touched" class="validation_error">
+        Выберите значение координаты X от {{xMin}} до {{xMax}}
+      </div>
+      <span *ngFor="let x of xValues">
+        <input id="{{'x'+ x}}" formControlName="valueOfX" [value]="x" type="radio" name="valueOfX">
+        <label for="{{'x'+ x}}">{{x}}</label>
+      </span>
     </div>
+
     <div class="clear"></div>
+
     <div class="y">
-      <p>Выберите координату по Y:<span id="y-err" style="color: red; display: none">ошибка Y</span></p>
-      <input class="yInput" type="text" maxlength="15" [(ngModel)]="valueOfY" name="valueOfY" placeholder="Введите число от -3 до 3">
+      <p>Выберите координату по Y:</p>
+      <div *ngIf="coordinatesForm.controls[yFormName].invalid &&
+      coordinatesForm.controls[yFormName].touched" class="validation_error">
+        Выберите значение координаты Y от {{yMin}} до {{yMax}}
+      </div>
+      <input formControlName="valueOfY" class="yInput" type="text"
+             maxlength="15" name="valueOfY" placeholder="Введите число от -3 до 3">
     </div>
+
     <div class="clear"></div>
+
     <div class="r">
-      <p>Выберите значение радиуса R:<span id="r-err" style="color: red; display: none">ошибка R</span></p>
-
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="-3">-3<br>
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="-2">-2<br>
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="-1">-1<br>
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="0">0<br>
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="1">1<br>
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="2">2<br>
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="3">3<br>
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="4">4<br>
-      <input type="radio" [(ngModel)]="valueOfR" name="valueOfR" value="5">5<br>
+      <p>Выберите значение радиуса R:</p>
+      <div *ngIf="coordinatesForm.controls[rFormName].invalid &&
+      coordinatesForm.controls[rFormName].touched" class="validation_error">
+        Выберите значение радиуса от {{rMin}} до {{rMax}}
+      </div>
+      <span *ngFor="let r of rValues">
+        <input id="{{'r' + r}}" formControlName="valueOfR" [value]="r"
+               type="radio" name="valueOfR">
+        <label for="{{'r' + r}}">{{r}}</label>
+      </span>
     </div>
-    <button (click)="checkResults()">Check!</button>
-    <canvas (click)="canvasListener($event)" id="myCanvas" width="300" height="300"
-            style="border: 2px solid #0a28b4"></canvas>
 
+    <button type="submit" [disabled]="coordinatesForm.invalid">Check</button>
+    <canvas #myCanvas (click)="submitCanvas($event)" width="500" height="500"
+            style="border: 2px solid #0a28b4"></canvas>
   </form>
   <app-index [history]="history"></app-index>
 </div>
