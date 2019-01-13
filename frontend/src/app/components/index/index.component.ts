@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 
-declare function historyDots();
 
 @Component({
   selector: 'app-index',
