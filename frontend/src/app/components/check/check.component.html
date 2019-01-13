@@ -4,8 +4,8 @@
     <div class="x">
       <p>Выберите координату по X:</p>
 
-      <div *ngIf="coordinatesForm.controls['valueOfX'].invalid &&
-      coordinatesForm.controls['valueOfX'].touched">
+      <div *ngIf="coordinatesForm.controls[xFormName].invalid &&
+      coordinatesForm.controls[xFormName].touched" class="validation_error">
         Выберите значение координаты X от {{xMin}} до {{xMax}}
       </div>
       <span *ngFor="let x of xValues">
@@ -18,8 +18,8 @@
 
     <div class="y">
       <p>Выберите координату по Y:</p>
-      <div  *ngIf="coordinatesForm.controls['valueOfY'].invalid &&
-      coordinatesForm.controls['valueOfY'].touched" class="validation_error">
+      <div *ngIf="coordinatesForm.controls[yFormName].invalid &&
+      coordinatesForm.controls[yFormName].touched" class="validation_error">
         Выберите значение координаты Y от {{yMin}} до {{yMax}}
       </div>
       <input formControlName="valueOfY" class="yInput" type="text"
@@ -30,7 +30,10 @@
 
     <div class="r">
       <p>Выберите значение радиуса R:</p>
-
+      <div *ngIf="coordinatesForm.controls[rFormName].invalid &&
+      coordinatesForm.controls[rFormName].touched" class="validation_error">
+        Выберите значение радиуса от {{rMin}} до {{rMax}}
+      </div>
       <span *ngFor="let r of rValues">
         <input id="{{'r' + r}}" formControlName="valueOfR" [value]="r"
                type="radio" name="valueOfR">
@@ -39,7 +42,7 @@
     </div>
 
     <button type="submit" [disabled]="coordinatesForm.invalid">Check</button>
-    <canvas #myCanvas (click)="submitCanvas($event)" width="300" height="300"
+    <canvas #myCanvas (click)="submitCanvas($event)" width="500" height="500"
             style="border: 2px solid #0a28b4"></canvas>
   </form>
   <app-index [history]="history"></app-index>

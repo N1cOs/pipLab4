@@ -90,17 +90,19 @@ export class CheckComponent implements OnInit, AfterViewInit {
       [this.xFormName] : parseFloat(((MP.x - canvas.width / 2) / scale).toFixed(3)),
       [this.yFormName] : -1 * parseFloat(((MP.y - canvas.height / 2) / scale).toFixed(3))
     });
+
+    for(let i in this.coordinatesForm.controls)
+      this.coordinatesForm.controls[i].markAsTouched();
+
     if(this.coordinatesForm.valid)
       this.onSubmit(this.coordinatesForm.value);
-    else
-      console.log('message');
   }
 
   getWithOffset(canvas, event) {
     let rect = canvas.getBoundingClientRect();
     return {
-      x: event.clientX - rect.left - 5,
-      y: event.clientY - rect.top - 5
+      x: event.clientX - rect.left - 2,
+      y: event.clientY - rect.top - 2
     };
   }
 
