@@ -12,37 +12,37 @@ import {Check} from '../../interfaces/check';
 export class CheckComponent implements OnInit, AfterViewInit {
 
   @ViewChild('myCanvas')
-  canvasRef:ElementRef;
+  canvasRef: ElementRef;
 
 
-  readonly xMin:number = -3;
-  readonly xMax:number = 5;
-  readonly yMin:number = -3;
-  readonly yMax:number = 3;
-  readonly rMin:number = 1;
-  readonly rMax:number = 5;
+  readonly xMin: number = -3;
+  readonly xMax: number = 5;
+  readonly yMin: number = -3;
+  readonly yMax: number = 3;
+  readonly rMin: number = 1;
+  readonly rMax: number = 5;
 
-  xValues:number[] = [];
-  rValues:number[] = [];
+  xValues: number[] = [];
+  rValues: number[] = [];
 
-  coordinatesForm:FormGroup;
-  readonly xFormName:string = 'valueOfX';
-  readonly yFormName:string = 'valueOfY';
-  readonly rFormName:string = 'valueOfR';
+  coordinatesForm: FormGroup;
+  readonly xFormName: string = 'valueOfX';
+  readonly yFormName: string = 'valueOfY';
+  readonly rFormName: string = 'valueOfR';
 
-  history:Check[] = [];
+  history: Check[] = [];
 
 
-  constructor(private fb:FormBuilder, private checkService: CheckService) {
+  constructor(private fb: FormBuilder, private checkService: CheckService) {
     this.coordinatesForm = fb.group({
-      [this.xFormName]:[null, Validators.compose([
+      [this.xFormName]: [null, Validators.compose([
         Validators.required, Validators.min(this.xMin), Validators.max(this.xMax)
       ])],
-      [this.yFormName]:[null, Validators.compose([
+      [this.yFormName]: [null, Validators.compose([
         Validators.required, Validators.pattern('^[+-]?([0-9]*[.,])?[0-9]*$'),
         Validators.min(this.yMin), Validators.max(this.yMax)
       ])],
-      [this.rFormName]:[null, Validators.compose([
+      [this.rFormName]: [null, Validators.compose([
         Validators.required, Validators.min(this.rMin), Validators.max(this.rMax)
       ])]
     });
@@ -57,45 +57,58 @@ export class CheckComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.addRadioListeners(this);
     this.initHistory();
-    this.drawCanvas();
+    this.drawCanvas(5);
 
   }
 
-  onSubmit(check:any){
+  addRadioListeners(component: CheckComponent) {
+    let rRadios = document.getElementsByName('valueOfR');
+    for (let i = 0; i < rRadios.length; i++) {
+      rRadios[i].addEventListener('change', function () {
+        let radius = parseFloat(this.id.substr(1));
+        component.drawCanvas(radius);
+        component.historyDots();
+
+      });
+    }
+  }
+
+  onSubmit(check: any) {
     const request = {
       x: check.valueOfX,
       y: check.valueOfY,
       r: check.valueOfR,
     };
     this.checkService.check(request, localStorage.getItem('token'))
-      .subscribe((data:Check) => {
-      this.history.splice(0, 0, data);
-      this.historyDots();
-    });
+      .subscribe((data: Check) => {
+        this.history.splice(0, 0, data);
+        this.historyDots();
+      });
   }
 
-  private initHistory(){
+  private initHistory() {
     this.checkService.checkHistory(localStorage.getItem('token'))
-      .subscribe((results:Check[]) =>{
+      .subscribe((results: Check[]) => {
         this.history = results;
         this.historyDots();
       });
   }
 
-  submitCanvas(event){
-    let scale = 20;
+  submitCanvas(event) {
+    let scale = 50;
     let canvas = this.canvasRef.nativeElement;
     let MP = this.getWithOffset(canvas, event);
     this.coordinatesForm.patchValue({
-      [this.xFormName] : parseFloat(((MP.x - canvas.width / 2) / scale).toFixed(3)),
-      [this.yFormName] : -1 * parseFloat(((MP.y - canvas.height / 2) / scale).toFixed(3))
+      [this.xFormName]: parseFloat(((MP.x - canvas.width / 2) / scale).toFixed(3)),
+      [this.yFormName]: -1 * parseFloat(((MP.y - canvas.height / 2) / scale).toFixed(3))
     });
 
-    for(let i in this.coordinatesForm.controls)
+    for (let i in this.coordinatesForm.controls)
       this.coordinatesForm.controls[i].markAsTouched();
 
-    if(this.coordinatesForm.valid)
+    if (this.coordinatesForm.valid)
       this.onSubmit(this.coordinatesForm.value);
   }
 
@@ -107,14 +120,15 @@ export class CheckComponent implements OnInit, AfterViewInit {
     };
   }
 
-  drawCanvas(){
+  drawCanvas(rad) {
     const canvas = this.canvasRef.nativeElement;
     const width = canvas.width;
     const height = canvas.height;
     const coordCenter = width / 2;
-    const radius = 100;
+    const scale = 50;
+    const radius = rad * scale;
     const ctx = canvas.getContext('2d');
-
+    ctx.clearRect(0, 0, width, height);
     ctx.beginPath();
     let startangel = 90 * Math.PI / 180;
     let endangel = 180 * Math.PI / 180;
@@ -151,21 +165,21 @@ export class CheckComponent implements OnInit, AfterViewInit {
     ctx.fillStyle = '#ed1c24';
   }
 
-  historyDots(){
+  historyDots() {
     const canvas = this.canvasRef.nativeElement;
     const width = canvas.width;
     const height = canvas.height;
-    const scale = 20;
+    const scale = 50;
     const ctx = canvas.getContext('2d');
 
-    for(let check of this.history){
+    for (let check of this.history) {
       ctx.beginPath();
       ctx.arc(check.xValue * scale + width / 2,
         height / 2 - check.yValue * scale,
         2,
         0,
         Math.PI * 2);
-      if(check.result)
+      if (check.result)
         ctx.fillStyle = '#1f4';
       else
         ctx.fillStyle = '#ed1c24';
