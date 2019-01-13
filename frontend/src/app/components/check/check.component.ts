@@ -59,6 +59,7 @@ export class CheckComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initHistory();
     this.drawCanvas();
+
   }
 
   onSubmit(check:any){
@@ -69,9 +70,9 @@ export class CheckComponent implements OnInit, AfterViewInit {
     };
     this.checkService.check(request, localStorage.getItem('token'))
       .subscribe((data:Check) => {
-        this.history.splice(0, 0, data);
-        this.historyDots();
-      });
+      this.history.splice(0, 0, data);
+      this.historyDots();
+    });
   }
 
   private initHistory(){
