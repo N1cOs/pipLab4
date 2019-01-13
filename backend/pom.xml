@@ -57,6 +57,7 @@
     </dependencies>
 
     <build>
+        <finalName>lab4</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

@@ -8,7 +8,8 @@ import javax.ws.rs.core.Application;
         name = "java:app/PostgresDatasource",
         className = "org.postgresql.ds.PGConnectionPoolDataSource",
         databaseName = "studs",
-        portNumber = 1234,
+        portNumber = 5432,
+        serverName = "pg",
         user = "s243856",
         password = ""
 )

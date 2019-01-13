@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild,} from '@angular
 import {CheckService} from '../../services/check.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Check} from '../../interfaces/check';
+import {Title} from '@angular/platform-browser';
 
 
 @Component({
@@ -33,7 +34,9 @@ export class CheckComponent implements OnInit, AfterViewInit {
   history: Check[] = [];
 
 
-  constructor(private fb: FormBuilder, private checkService: CheckService) {
+  constructor(private fb: FormBuilder, private checkService: CheckService, private titleService:Title) {
+    titleService.setTitle("Проверка");
+
     this.coordinatesForm = fb.group({
       [this.xFormName]: [null, Validators.compose([
         Validators.required, Validators.min(this.xMin), Validators.max(this.xMax)
