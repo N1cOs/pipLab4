@@ -1,5 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {LoginService} from '../../services/login.service';
+import {Router} from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -8,15 +10,30 @@ import {LoginService} from '../../services/login.service';
 })
 export class LoginComponent {
 
-  @Input() login: string;
-  @Input() password: string;
+  login: string;
+  password: string;
+  authError:boolean;
+  errorMessage:string;
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService, private router:Router) {
 
   }
 
   logIn() {
-    this.loginService.login(this.login, this.password);
+    this.loginService.login(this.login, this.password).subscribe(
+      (data) => {
+        localStorage.setItem('token', data['token']);
+        this.router.navigate(['/check']);
+      },
+      error => this.handleError(error)
+    );
+
+  }
+
+  private handleError(error:HttpErrorResponse){
+    this.authError = true;
+    if(error.status == 401)
+      this.errorMessage = 'Введен неверный логин или пароль';
   }
 }
 

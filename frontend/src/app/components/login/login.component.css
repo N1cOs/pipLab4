@@ -11,6 +11,12 @@ app-login{
 
 }
 
+.error-message{
+  margin-top: -15px;
+  color: red;
+  font-size: 0.7em;
+}
+
 input{
   margin-bottom: 10px;
 }
