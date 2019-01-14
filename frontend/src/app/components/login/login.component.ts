@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +16,8 @@ export class LoginComponent {
   authError:boolean;
   errorMessage:string;
 
-  constructor(private loginService: LoginService, private router:Router) {
-
+  constructor(private loginService: LoginService, private router:Router, private ts:Title) {
+    ts.setTitle('Вход');
   }
 
   logIn() {
