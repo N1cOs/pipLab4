@@ -1,8 +1,7 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild,} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CheckService} from '../../services/check.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Check} from '../../interfaces/check';
-import {Title} from '@angular/platform-browser';
 
 
 @Component({
@@ -34,9 +33,7 @@ export class CheckComponent implements OnInit, AfterViewInit {
   history: Check[] = [];
 
 
-  constructor(private fb: FormBuilder, private checkService: CheckService, private titleService:Title) {
-    titleService.setTitle("Проверка");
-
+  constructor(private fb: FormBuilder, private checkService: CheckService) {
     this.coordinatesForm = fb.group({
       [this.xFormName]: [null, Validators.compose([
         Validators.required, Validators.min(this.xMin), Validators.max(this.xMax)
@@ -100,14 +97,13 @@ export class CheckComponent implements OnInit, AfterViewInit {
   }
 
   submitCanvas(event) {
-    let scale = 50;
+    let scale = this.getResponsiveScale();
     let canvas = this.canvasRef.nativeElement;
     let MP = this.getWithOffset(canvas, event);
     this.coordinatesForm.patchValue({
-      [this.xFormName]: parseFloat(((MP.x - canvas.width / 2) / scale).toFixed(3)),
-      [this.yFormName]: -1 * parseFloat(((MP.y - canvas.height / 2) / scale).toFixed(3))
+      [this.xFormName]: parseFloat(((MP.x - canvas.clientWidth / 2) / scale).toFixed(3)),
+      [this.yFormName]: -1 * parseFloat(((MP.y - canvas.clientHeight / 2) / scale).toFixed(3))
     });
-
     for (let i in this.coordinatesForm.controls)
       this.coordinatesForm.controls[i].markAsTouched();
 
@@ -188,5 +184,14 @@ export class CheckComponent implements OnInit, AfterViewInit {
         ctx.fillStyle = '#ed1c24';
       ctx.fill();
     }
+  }
+
+  getResponsiveScale() {
+    let scale = 50;
+    if (this.canvasRef.nativeElement.clientWidth == 200)
+      scale = 50 * 2 / 5;
+    else if (this.canvasRef.nativeElement.clientWidth == 300)
+      scale = 50 * 3 / 5;
+    return scale;
   }
 }
