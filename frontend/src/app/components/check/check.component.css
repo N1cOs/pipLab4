@@ -102,10 +102,14 @@ form {
 }
 
 canvas {
+  margin: 40px auto auto -6px;
+  border: 2px solid #0a28b4;
   display: block;
-  margin: auto;
-  margin-top: 2%;
-  border: 5px solid #ed1c24;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 500px;
+  height: 500px;
 }
 
 
@@ -144,6 +148,11 @@ input[name="valueOfX"] + br {
 
   }
 
+  canvas{
+    width: 300px;
+    height: 300px;
+  }
+
   .x {
     width: 100%;
   }
@@ -166,5 +175,10 @@ input[name="valueOfX"] + br {
   input[name="valueOfX"] + br {
     display: block;
   }
+  canvas{
+    width: 200px;
+    height: 200px;
+  }
+
 }
 
